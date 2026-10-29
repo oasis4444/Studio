@@ -1,0 +1,13 @@
+[
+ {
+  "slug": "exemple-client",
+  "titre": "Mariage de Hery & Fara",
+  "date": "2026-12-19T10:00:00+03:00",
+  "date_ms": 1797663600000,
+  "date_limite_ms": 1796504400000,
+  "date_texte": "19 décembre 2026",
+  "hotes": "Hery & Fara",
+  "modele": "caramel",
+  "url": "https://randnjara.github.io/studio/e/exemple-client/"
+ }
+]

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Studio Fanasana · Invitations numériques</title>
+<meta name="description" content="Invitations numériques pour mariages, baptêmes et anniversaires">
+<meta property="og:title" content="Studio Fanasana · Invitations numériques"><meta property="og:description" content="Invitations numériques pour mariages, baptêmes et anniversaires">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--linen:#d9c6a8;--paper:#f7f0e4;--card:#fbf6ee;--sand:#e6d4b8;--caramel:#a87c50;--brown:#6b4a2f;--espresso:#3d2a1b;
+  --line:rgba(107,74,47,.18);--ok:#4f6b3a;--no:#9a4a34;
+  --script:'Great Vibes',cursive;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost','Helvetica Neue',Arial,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--espresso);font:400 16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:500 15px/1 var(--sans);letter-spacing:.05em;border-radius:40px;
+  padding:14px 22px;border:1.5px solid var(--brown);background:var(--brown);color:var(--paper);text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn.sec{background:transparent;color:var(--brown);border-color:rgba(107,74,47,.4)}
+.btn.wa{background:#3f6b3f;border-color:#3f6b3f}
+.btn.sm{padding:9px 14px;font-size:13.5px}
+.btn:focus-visible{outline:3px solid var(--caramel);outline-offset:3px}
+.kicker{font:500 12.5px/1.4 var(--sans);letter-spacing:.28em;text-transform:uppercase;color:var(--caramel)}
+h2{font:600 clamp(30px,6vw,44px)/1.1 var(--serif);margin:6px 0 14px;color:var(--espresso)}
+
+header.hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,#efe2cc,var(--linen) 70%);border-bottom:1px solid var(--line)}
+.hero .wrap{padding-top:22px;padding-bottom:56px;text-align:center}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:46px}
+.brand{font:400 30px/1 var(--script);color:var(--brown);text-decoration:none}
+.top nav{display:flex;gap:16px;font:500 13px var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.top nav a{text-decoration:none;color:var(--brown)}
+.hero h1{font:400 clamp(52px,13vw,96px)/1 var(--script);color:var(--brown);margin:14px 0 10px}
+.hero p.lead{font:italic 400 clamp(20px,4.6vw,26px)/1.35 var(--serif);max-width:620px;margin:0 auto 26px}
+.hero .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.orn{display:block;margin:0 auto;width:200px;height:18px}
+section{padding:56px 0;border-bottom:1px solid var(--line)}
+.models{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px;margin-top:22px}
+.model{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
+.poster{position:relative;display:block;aspect-ratio:9/12;overflow:hidden;background:var(--sand)}
+.poster img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;-webkit-touch-callout:none;user-select:none}
+.poster .play{position:absolute;left:50%;top:50%;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;background:rgba(61,42,27,.78);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:26px;padding-left:5px}
+.poster .tag{position:absolute;left:12px;top:12px;background:rgba(251,246,238,.92);color:var(--brown);border-radius:20px;padding:5px 11px;font:600 11px var(--sans);letter-spacing:.18em;text-transform:uppercase}
+.m-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:10px}
+.m-body h3{margin:0;font:400 40px/1 var(--script);color:var(--brown)}
+.m-body p{margin:0;font:italic 19px/1.35 var(--serif)}
+.occ{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.occ li{font-size:12.5px;border:1px solid var(--line);border-radius:20px;padding:3px 10px;background:#fff8ee}
+.m-acts{display:flex;flex-wrap:wrap;gap:8px}
+.m-acts:empty{display:none}
+.soon{border:1.5px dashed rgba(107,74,47,.3);border-radius:22px;padding:26px;display:flex;flex-direction:column;justify-content:center;gap:8px;text-align:center;min-height:200px}
+.soon h3{margin:0;font:400 36px/1 var(--script);color:var(--brown)}
+.steps{list-style:none;padding:0;margin:22px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;counter-reset:s}
+.steps li{counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.steps li::before{content:counter(s);display:inline-flex;width:34px;height:34px;border-radius:50%;background:var(--brown);color:var(--paper);align-items:center;justify-content:center;font:600 16px var(--sans);margin-bottom:8px}
+.steps b{display:block;font:600 22px var(--serif)}
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 26px;margin-top:20px}
+.feat{border-top:1px solid var(--line);padding-top:12px}
+.feat b{font:600 21px var(--serif);display:block}
+.feat span{font-size:15px;opacity:.85}
+.order{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px;align-items:start}
+.order ul{margin:0;padding-left:18px}
+.order li{margin:4px 0}
+.cta{background:var(--brown);color:var(--paper);border-radius:24px;padding:24px}
+.cta h3{margin:0 0 6px;font:400 40px/1 var(--script)}
+.cta p{margin:0 0 16px;opacity:.9}
+.cta .btn{background:var(--paper);color:var(--brown);border-color:var(--paper)}
+.cta .btn.wa{background:#4f8a4f;border-color:#4f8a4f;color:#fff}
+.cta .acts{display:flex;gap:10px;flex-wrap:wrap}
+.prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:20px}
+.price{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.price h3{margin:0;font:600 24px var(--serif)} .price .amt{font:600 30px var(--sans);color:var(--brown);margin:4px 0 8px}
+.note{font:italic 19px/1.4 var(--serif)}
+footer{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}
+@media (max-width:560px){.top nav{display:none} section{padding:44px 0}}
+</style></head><body>
+<header class="hero"><div class="wrap">
+  <div class="top"><a class="brand" href="#">Studio Fanasana</a>
+    <nav><a href="#modeles">Modèles</a><a href="#inclus">Inclus</a><a href="#commander">Commander</a></nav></div>
+  <div class="kicker">Mariage · Anniversaire de mariage · Baptême</div>
+  <h1>Vos invitations,<br>en film</h1>
+  <svg class="orn" viewBox="0 0 200 18" aria-hidden="true"><path d="M0 9H80M120 9H200" stroke="#a87c50" stroke-width="1.5"/><path d="M100 2 L107 9 L100 16 L93 9Z" fill="none" stroke="#a87c50" stroke-width="1.5"/></svg>
+  <p class="lead">Invitations numériques pour mariages, baptêmes et anniversaires. Un film d’ouverture avec votre musique, un lien pour chaque famille et les réponses qui arrivent toutes seules.</p>
+  <div class="acts"><a class="btn" href="#modeles">Voir les modèles</a><a class="btn wa" href="https://wa.me/261342754147?text=Bonjour%20Studio%20Fanasana%20%21%20Je%20voudrais%20une%20invitation%20num%C3%A9rique." target="_blank" rel="noopener">Nous écrire sur WhatsApp</a></div>
+</div></header>
+
+<section id="modeles"><div class="wrap">
+  <div class="kicker">Catalogue</div><h2>Essayez nos modèles</h2>
+  <p>Ouvrez un modèle sur votre téléphone : vous voyez exactement ce que vos invités verront. Les démonstrations portent un filigrane et rien n’y est enregistré ni téléchargeable : nous créons ensuite votre invitation avec vos textes, photos et musique.</p>
+  <div class="models">
+    <article class="model">
+      <a class="poster" href="modeles/caramel/index.html" aria-label="Essayer le modèle Caramel">
+        <img src="modeles/caramel/film.jpg" alt="Aperçu du modèle Caramel" loading="lazy" draggable="false">
+        <span class="play" aria-hidden="true">▶</span><span class="tag">Démo</span>
+      </a>
+      <div class="m-body">
+        <h3>Caramel</h3>
+        <p>Tons caramel et crème, fleurs dorées, écriture manuscrite</p>
+        <ul class="occ"><li>Mariage</li><li>Anniversaire de mariage</li><li>Baptême</li></ul>
+        <div class="m-acts">
+          <a class="btn sm" href="modeles/caramel/index.html">Essayer · lien général</a>
+          <a class="btn sm sec" href="modeles/caramel/index.html?i=eyJuIjogIkZhbWlsbGUgUmFrb3RvIiwgInMiOiA0LCAiaWQiOiAiZGVtbyIsICJhIjogMiwgImUiOiAyfQ">Essayer · lien personnel</a>
+        </div>
+        <div class="m-acts"><a class="btn wa sm" href="https://wa.me/261342754147?text=Bonjour%20Studio%20Fanasana%20%21%20Je%20voudrais%20le%20mod%C3%A8le%20Caramel." target="_blank" rel="noopener">Commander ce modèle</a></div>
+      </div>
+    </article>
+    <div class="soon"><h3>Sur mesure</h3><p>Couleurs, fleurs, écriture, scènes du film : nous pouvons créer un modèle à votre image.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="kicker">Comment ça marche</div><h2>De votre idée à vos invités</h2>
+  <ol class="steps"><li><b>Choisissez</b>Essayez les modèles ci-dessus sur votre téléphone, comme vos invités les verront.</li><li><b>Envoyez</b>Vos noms, la date, le programme, les lieux, vos photos, vidéos et la musique.</li><li><b>Nous créons</b>Votre film d’ouverture et vos pages, avec vos textes. Vous validez chaque étape.</li><li><b>Vous invitez</b>Vous recevez votre lien et votre espace Gestion pour la liste d’invités et les réponses.</li></ol>
+</div></section>
+
+<section id="inclus"><div class="wrap">
+  <div class="kicker">Inclus</div><h2>Tout pour recevoir sereinement</h2>
+  <div class="feats"><div class="feat"><b>Film d’ouverture</b><span>Vertical, avec votre musique, enveloppe qui s’ouvre et vos photos.</span></div><div class="feat"><b>Lien général</b><span>Un seul lien pour un groupe Messenger ou WhatsApp, sans formulaire.</span></div><div class="feat"><b>Lien personnel</b><span>Un lien par famille : son nom, ses places et un formulaire de réponse.</span></div><div class="feat"><b>Date limite</b><span>Après la date, le formulaire se ferme tout seul et affiche vos contacts.</span></div><div class="feat"><b>Compte à rebours</b><span>Jours, heures, minutes jusqu’au grand jour, et les cartes des lieux.</span></div><div class="feat"><b>Espace Gestion</b><span>Import de votre liste Excel, statistiques, réponses en direct, envoi WhatsApp.</span></div><div class="feat"><b>Plan de tables</b><span>Tables, places restantes, cartes de table à imprimer.</span></div><div class="feat"><b>Dépenses et check-list</b><span>Budget, acomptes, reste à payer, tâches à cocher, pour vous seul.</span></div></div>
+  <h2 style="margin-top:40px;font-size:32px">Tarifs</h2><p class="note">Tarifs sur demande, selon le modèle, la durée du film et les options choisies.</p>
+</div></section>
+
+<section id="commander"><div class="wrap order">
+  <div><div class="kicker">Commander</div><h2>Ce qu’il nous faut</h2><ul><li>Type d’événement, prénoms, date et programme avec les heures</li><li>Lieux et liens Google Maps</li><li>Date limite de réponse</li><li>Téléphones et lien Facebook ou Messenger à afficher</li><li>Photos et vidéos, musique</li><li>Liste d’invités Excel (vous pouvez aussi l’ajouter plus tard)</li><li>Adresses Gmail qui auront accès à la Gestion</li></ul>
+    <p class="note" style="margin-top:16px">Les photos, vidéos et la musique doivent vous appartenir ou être libres de droits.</p></div>
+  <div class="cta"><h3>Parlons de votre fête</h3><p>Dites-nous la date et le modèle qui vous plaît, nous vous répondons avec un devis.</p>
+    <div class="acts"><a class="btn wa" href="https://wa.me/261342754147?text=Bonjour%20Studio%20Fanasana%20%21%20Je%20voudrais%20une%20invitation%20num%C3%A9rique." target="_blank" rel="noopener">WhatsApp</a><a class="btn" href="tel:+261342754147">Appeler</a></div></div>
+</div></section>
+<footer>Studio Fanasana · Invitations numériques</footer>
+</body></html>

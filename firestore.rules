@@ -1,0 +1,47 @@
+rules_version = '2';
+// Règles du studio : un seul projet Firebase, chaque client ne voit que son événement.
+// À coller dans la console Firebase → Firestore Database → Règles → Publier.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function mail() { return request.auth != null && request.auth.token.email_verified == true ? request.auth.token.email.lower() : ''; }
+    function isStudio() { return mail() in ["oasismdg3434@gmail.com"]; }
+
+    match /evenements/{eid} {
+      function ev() { return get(/databases/$(database)/documents/evenements/$(eid)).data; }
+      function isClient() { return mail() != '' && mail() in ev().get('clients', []); }
+      function canManage() { return isStudio() || isClient(); }
+      function isDep() { return isStudio() || (mail() != '' && mail() == ev().get('depenses', '')); }
+      function open() { return ev().get('actif', false) == true; }
+
+      allow get: if isStudio() || (mail() != '' && mail() in resource.data.get('clients', []));
+      allow list, create, update, delete: if isStudio();
+
+      match /families/{d} { allow read, write: if canManage(); }
+      match /tables/{d} { allow read, write: if canManage(); }
+      match /depenses/{d} { allow read, write: if isDep(); }
+      match /taches/{d} { allow read, write: if isDep(); }
+
+      match /reponses/{d} {
+        allow create: if open()
+          && (request.time.toMillis() < ev().dateLimite || canManage())
+          && request.resource.data.keys().hasOnly(['familyId', 'famille', 'places', 'reponse', 'personnes', 'date'])
+          && request.resource.data.familyId is string && request.resource.data.familyId.size() <= 60
+          && request.resource.data.famille is string && request.resource.data.famille.size() < 120
+          && request.resource.data.reponse in ['Vient', 'Ne vient pas']
+          && request.resource.data.personnes is int && request.resource.data.personnes >= 0 && request.resource.data.personnes <= 30
+          && request.resource.data.places is int && request.resource.data.places <= 200
+          && request.resource.data.date is int;
+        allow read, update, delete: if canManage();
+      }
+
+      match /vues/{d} {
+        allow create: if open()
+          && request.resource.data.keys().hasOnly(['fid', 'famille', 'date'])
+          && request.resource.data.fid is string && request.resource.data.fid.size() <= 60
+          && request.resource.data.famille is string && request.resource.data.famille.size() <= 120
+          && request.resource.data.date is int;
+        allow read, delete: if canManage();
+      }
+    }
+  }
+}

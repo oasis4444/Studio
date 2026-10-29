@@ -1,0 +1,14 @@
+{
+  "modele": "caramel",
+  "titre": "Mariage de Hery & Fara",
+  "date": "2026-12-19T10:00:00+03:00",
+  "date_limite": "2026-12-05",
+  "hotes": [{"nom": "Hery", "tel": "034 00 000 01"}, {"nom": "Fara", "tel": "034 00 000 02"}],
+  "facebook": {"nom": "Hery Rakoto", "url": "https://www.facebook.com/"},
+  "messenger": "https://m.me/",
+  "lieux": [{"nom": "Église d'Ambohijatovo", "bouton": "Map église", "maps": "https://www.google.com/maps/search/?api=1&query=Ambohijatovo"},
+            {"nom": "Salle Les Jardins", "bouton": "Map salle", "maps": "https://www.google.com/maps/search/?api=1&query=Antananarivo"}],
+  "phrase_partage": "pour partager ce bonheur avec nous",
+  "objet_confirmation": "à votre mariage",
+  "texte_whatsapp": "Nous avons la joie de vous inviter à notre mariage, le samedi 19 décembre 2026 à 10h."
+}

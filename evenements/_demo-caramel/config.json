@@ -1,0 +1,19 @@
+{
+  "demo": true,
+  "modele": "caramel",
+  "titre": "Mariage & Baptême",
+  "date": "auto",
+  "date_limite": "auto",
+  "hotes": [{"nom": "Hery", "tel": "034 00 000 01"}, {"nom": "Fara", "tel": "034 00 000 02"}],
+  "facebook": {"nom": "Hery Rakoto", "url": "https://www.facebook.com/"},
+  "lieux": [{"nom": "Église", "bouton": "Map église", "maps": "https://www.google.com/maps"},
+            {"nom": "Salle de réception", "bouton": "Map salle", "maps": "https://www.google.com/maps"}],
+  "phrase_partage": "pour partager ce double bonheur avec nous",
+  "objet_confirmation": "à votre mariage et au baptême",
+  "vitrine": {
+    "nom": "Caramel",
+    "accroche": "Tons caramel et crème, fleurs dorées, écriture manuscrite",
+    "occasions": ["Mariage", "Anniversaire de mariage", "Baptême"],
+    "famille_exemple": "Famille Rakoto"
+  }
+}
