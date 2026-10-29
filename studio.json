@@ -6,6 +6,16 @@
   "facebook": "",
   "indicatif": "261",
   "fuseau": "+03:00",
-  "admins": ["oasismdg3434@gmail.com"],
-  "firebase": null
+  "admins": [
+    "oasismdg3434@gmail.com"
+  ],
+  "firebase": null,
+  "types_evenement": [
+    "Mariage",
+    "Fiançailles",
+    "Anniversaire de mariage",
+    "Baptême",
+    "Première communion",
+    "Anniversaire"
+  ]
 }

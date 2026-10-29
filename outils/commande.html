@@ -37,7 +37,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--caramel);outline
   <form id="f" novalidate>
     <fieldset><legend>Modèle et événement</legend>
       <label>Modèle<select id="modele">__OPTIONS__<option value="sur-mesure">Sur mesure</option></select></label>
-      <label>Type d’événement<input id="type" maxlength="80" placeholder="Mariage, baptême, 10 ans de mariage…"></label>
+      <label>Type d’événement<input id="type" maxlength="80" list="types" placeholder="Choisissez ou écrivez"><datalist id="types">__TYPES__</datalist></label>
       <label>Prénoms des hôtes<input id="hotes" maxlength="80" placeholder="Hery & Fara"></label>
       <label>Nom de famille<input id="nom_famille" maxlength="80"></label>
       <label class="w">Enfant (baptême)<input id="enfant" maxlength="80" placeholder="Nom et prénom, si baptême"></label>

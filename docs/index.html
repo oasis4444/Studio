@@ -44,6 +44,11 @@ section{scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
 .hero .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .orn{display:block;margin:0 auto;width:200px;height:18px}
 section{padding:56px 0;border-bottom:1px solid var(--line)}
+.types{display:flex;gap:8px;overflow-x:auto;margin:18px -16px 0;padding:2px 16px 6px;scrollbar-width:none}
+.types button{font:500 14px var(--sans);letter-spacing:.03em;border:1.5px solid rgba(107,74,47,.35);background:transparent;color:var(--brown);border-radius:30px;padding:9px 16px;white-space:nowrap;cursor:pointer}
+.types button[aria-pressed="true"]{background:var(--brown);color:var(--paper);border-color:var(--brown)}
+.vide{grid-column:1/-1;font:italic 19px/1.4 var(--serif);margin:0}
+.model.off{display:none}
 .models{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px;margin-top:22px}
 .model{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
 .poster{position:relative;display:block;aspect-ratio:9/12;overflow:hidden;background:var(--sand)}
@@ -98,6 +103,7 @@ footer{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}
 <section id="modeles"><div class="wrap">
   <div class="kicker">Catalogue</div><h2>Essayez nos modèles</h2>
   <p>Ouvrez un modèle sur votre téléphone : vous voyez exactement ce que vos invités verront. Touchez « Personnaliser » pour essayer vos prénoms, vos dates, vos lieux et vos photos. Rien n’est enregistré : nous créons ensuite votre invitation et votre film avec vos textes, photos et musique.</p>
+  <div class="types" role="group" aria-label="Type d’événement"><button type="button" aria-pressed="true" data-t="">Tous</button><button type="button" aria-pressed="false" data-t="Mariage">Mariage</button><button type="button" aria-pressed="false" data-t="Fiançailles">Fiançailles</button><button type="button" aria-pressed="false" data-t="Anniversaire de mariage">Anniversaire de mariage</button><button type="button" aria-pressed="false" data-t="Baptême">Baptême</button><button type="button" aria-pressed="false" data-t="Première communion">Première communion</button><button type="button" aria-pressed="false" data-t="Anniversaire">Anniversaire</button></div>
   <div class="models">
     <article class="model" data-modele="caramel" style="order:0">
       <a class="poster" href="modeles/caramel/index.html" aria-label="Essayer le modèle Caramel">
@@ -116,6 +122,7 @@ footer{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}
         <div class="m-acts"><a class="btn wa sm" href="commande/index.html?modele=caramel">Commander ce modèle</a></div>
       </div>
     </article>
+    <p class="vide" id="vide" hidden>Pas encore de modèle pour cet événement : nous le créons sur mesure, ou adaptons un modèle existant.</p>
     <div class="soon"><h3>Sur mesure</h3><p>Couleurs, fleurs, écriture, scènes du film : nous pouvons créer un modèle à votre image.</p></div>
   </div>
 </div></section>
@@ -139,6 +146,23 @@ footer{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}
 </div></section>
 <footer>Studio Fanasana · Invitations numériques</footer>
 
+<script>
+(function(){
+  const bs = [...document.querySelectorAll('.types button')];
+  const norm = v => String(v).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  function pick(t){
+    bs.forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t));
+    let n = 0;
+    document.querySelectorAll('.model').forEach(m => {
+      const occ = [...m.querySelectorAll('.occ li')].map(li => norm(li.textContent));
+      const ok = !t || occ.includes(norm(t));
+      m.classList.toggle('off', !ok); if (ok && m.dataset.cache !== '1') n++;
+    });
+    document.getElementById('vide').hidden = n > 0;
+  }
+  bs.forEach(b => b.addEventListener('click', () => pick(b.dataset.t)));
+})();
+</script>
 <div class="botbar"><div class="wrap"><small>Mariage · Anniversaire de mariage · Baptême</small>
   <div class="acts"><a class="btn" href="#modeles">Essayer un modèle</a><a class="btn wa" href="commande/index.html">Commander</a></div></div></div>
 </body></html>

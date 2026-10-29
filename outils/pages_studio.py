@@ -27,6 +27,24 @@ a{color:inherit}
 h2{font:600 clamp(30px,6vw,44px)/1.1 var(--serif);margin:6px 0 14px;color:var(--espresso)}
 """
 
+FILTRE = """<script>
+(function(){
+  const bs = [...document.querySelectorAll('.types button')];
+  const norm = v => String(v).normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase().trim();
+  function pick(t){
+    bs.forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t));
+    let n = 0;
+    document.querySelectorAll('.model').forEach(m => {
+      const occ = [...m.querySelectorAll('.occ li')].map(li => norm(li.textContent));
+      const ok = !t || occ.includes(norm(t));
+      m.classList.toggle('off', !ok); if (ok && m.dataset.cache !== '1') n++;
+    });
+    document.getElementById('vide').hidden = n > 0;
+  }
+  bs.forEach(b => b.addEventListener('click', () => pick(b.dataset.t)));
+})();
+</script>"""
+
 def vitrine(studio, catalogue):
     wa = tel_intl(studio.get('whatsapp', ''), studio.get('indicatif', '261'))
     msg = f"Bonjour {studio['nom']} ! Je voudrais une invitation numérique."
@@ -86,7 +104,7 @@ try {
   const fs = getFirestore(initializeApp(__FB__));
   (await getDocs(collection(fs, 'modeles'))).forEach(d => {
     const m = d.data(), el = document.querySelector(`.model[data-modele="${CSS.escape(d.id)}"]`); if (!el) return;
-    if (m.visible === false) { el.hidden = true; return; }
+    if (m.visible === false) { el.hidden = true; el.dataset.cache = '1'; return; }
     if (m.ordre) el.style.order = m.ordre;
     if (m.nom) el.querySelector('[data-k=nom]').textContent = m.nom;
     if (m.accroche) el.querySelector('[data-k=accroche]').textContent = m.accroche;
@@ -124,6 +142,11 @@ section{{scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}}
 .hero .acts{{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}}
 .orn{{display:block;margin:0 auto;width:200px;height:18px}}
 section{{padding:56px 0;border-bottom:1px solid var(--line)}}
+.types{{display:flex;gap:8px;overflow-x:auto;margin:18px -16px 0;padding:2px 16px 6px;scrollbar-width:none}}
+.types button{{font:500 14px var(--sans);letter-spacing:.03em;border:1.5px solid rgba(107,74,47,.35);background:transparent;color:var(--brown);border-radius:30px;padding:9px 16px;white-space:nowrap;cursor:pointer}}
+.types button[aria-pressed="true"]{{background:var(--brown);color:var(--paper);border-color:var(--brown)}}
+.vide{{grid-column:1/-1;font:italic 19px/1.4 var(--serif);margin:0}}
+.model.off{{display:none}}
 .models{{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px;margin-top:22px}}
 .model{{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}}
 .poster{{position:relative;display:block;aspect-ratio:9/12;overflow:hidden;background:var(--sand)}}
@@ -178,7 +201,9 @@ footer{{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}}
 <section id="modeles"><div class="wrap">
   <div class="kicker">Catalogue</div><h2>Essayez nos modèles</h2>
   <p>Ouvrez un modèle sur votre téléphone : vous voyez exactement ce que vos invités verront. Touchez « Personnaliser » pour essayer vos prénoms, vos dates, vos lieux et vos photos. Rien n’est enregistré : nous créons ensuite votre invitation et votre film avec vos textes, photos et musique.</p>
+  <div class="types" role="group" aria-label="Type d’événement"><button type="button" aria-pressed="true" data-t="">Tous</button>{''.join(f'<button type="button" aria-pressed="false" data-t="{h(t)}">{h(t)}</button>' for t in studio.get('types_evenement', []))}</div>
   <div class="models">{''.join(cards)}
+    <p class="vide" id="vide" hidden>Pas encore de modèle pour cet événement : nous le créons sur mesure, ou adaptons un modèle existant.</p>
     <div class="soon"><h3>Sur mesure</h3><p>Couleurs, fleurs, écriture, scènes du film : nous pouvons créer un modèle à votre image.</p></div>
   </div>
 </div></section>
@@ -202,6 +227,7 @@ footer{{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}}
 </div></section>
 <footer>{h(studio['nom'])} · Invitations numériques</footer>
 {reglages}
+{FILTRE}
 <div class="botbar"><div class="wrap"><small>Mariage · Anniversaire de mariage · Baptême</small>
   <div class="acts"><a class="btn" href="#modeles">Essayer un modèle</a><a class="btn wa" href="commande/index.html">Commander</a></div></div></div>
 </body></html>"""
@@ -402,5 +428,5 @@ def commande(studio, catalogue):
     t = open(__file__.replace('pages_studio.py', 'commande.html')).read()
     opts = ''.join(f'<option value="{h(m["modele"])}">{h(m.get("nom", m["modele"]))}</option>' for m in catalogue)
     return (t.replace('__NOM__', h(studio['nom'])).replace('__FONTS__', FONTS).replace('__BASE_CSS__', BASE_CSS)
-             .replace('__OPTIONS__', opts).replace('__FB__', json.dumps(studio.get('firebase') or None))
+             .replace('__OPTIONS__', opts).replace('__TYPES__', ''.join(f'<option value="{h(t)}">' for t in studio.get('types_evenement', []))).replace('__FB__', json.dumps(studio.get('firebase') or None))
              .replace('__WA__', tel_intl(studio.get('whatsapp', ''), studio.get('indicatif', '261'))))
