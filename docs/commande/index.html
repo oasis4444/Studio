@@ -93,7 +93,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--caramel);outline
     <a class="btn wa" id="waGo" target="_blank" rel="noopener" href="#">Envoyer le résumé sur WhatsApp</a></div>
 </main>
 <script type="module">
-const FB = null, WA = '261342754147';
+const FB = {"apiKey": "AIzaSyBY5Okcw2RycSHL4tYvPkX7JjVPklSg3SA", "authDomain": "studio-invitation.firebaseapp.com", "projectId": "studio-invitation", "storageBucket": "studio-invitation.firebasestorage.app", "messagingSenderId": "252464430379", "appId": "1:252464430379:web:001c64e5d67459542a996e"}, WA = '261342754147';
 const $ = s => document.querySelector(s);
 const F = ['modele','type','hotes','nom_famille','enfant','date','date_limite','programme','lieu1','maps1','lieu2','maps2','telephones','facebook','verset','style','medias','musique','contact_nom','contact_tel','gmails','message'];
 const m = new URLSearchParams(location.search).get('modele'); if (m && [...$('#modele').options].some(o => o.value === m)) $('#modele').value = m;

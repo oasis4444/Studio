@@ -60,7 +60,7 @@ textarea{min-height:64px;resize:vertical}
 </main>
 <div class="toast" id="toast" hidden></div>
 <script type="module">
-const FB = null, ADMINS = ["oasismdg3434@gmail.com"];
+const FB = {"apiKey": "AIzaSyBY5Okcw2RycSHL4tYvPkX7JjVPklSg3SA", "authDomain": "studio-invitation.firebaseapp.com", "projectId": "studio-invitation", "storageBucket": "studio-invitation.firebasestorage.app", "messagingSenderId": "252464430379", "appId": "1:252464430379:web:001c64e5d67459542a996e"}, ADMINS = ["oasismdg3434@gmail.com"];
 const $ = s => document.querySelector(s);
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let tt; const toast = t => { const e = $('#toast'); e.textContent = t; e.hidden = false; clearTimeout(tt); tt = setTimeout(() => e.hidden = true, 3200); };

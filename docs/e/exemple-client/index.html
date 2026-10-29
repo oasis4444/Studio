@@ -791,7 +791,7 @@ if (demo){ window.__demo = window.__preview = true; window.__rsvpInit && window.
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-const fs = getFirestore(initializeApp({}));
+const fs = getFirestore(initializeApp({"apiKey": "AIzaSyBY5Okcw2RycSHL4tYvPkX7JjVPklSg3SA", "authDomain": "studio-invitation.firebaseapp.com", "projectId": "studio-invitation", "storageBucket": "studio-invitation.firebasestorage.app", "messagingSenderId": "252464430379", "appId": "1:252464430379:web:001c64e5d67459542a996e"}));
 const EID = 'exemple-client';
 window.__saveRsvp = d => addDoc(collection(fs, 'evenements', EID, 'reponses'), d);
 // historique des ouvertures : une ligne par visite (pas pour la démonstration ni les robots)

@@ -1401,7 +1401,7 @@ window.__startAdmin = startAdmin;
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getFirestore, collection, doc, getDoc, onSnapshot, addDoc, updateDoc, deleteDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-const app = initializeApp({}); const fs = getFirestore(app); const auth = getAuth(app);
+const app = initializeApp({"apiKey": "AIzaSyBY5Okcw2RycSHL4tYvPkX7JjVPklSg3SA", "authDomain": "studio-invitation.firebaseapp.com", "projectId": "studio-invitation", "storageBucket": "studio-invitation.firebasestorage.app", "messagingSenderId": "252464430379", "appId": "1:252464430379:web:001c64e5d67459542a996e"}); const fs = getFirestore(app); const auth = getAuth(app);
 const EID = 'exemple-client';
 const SEED = [];
 const $ = s => document.querySelector(s);

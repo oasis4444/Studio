@@ -9,7 +9,14 @@
   "admins": [
     "oasismdg3434@gmail.com"
   ],
-  "firebase": null,
+  "firebase": {
+    "apiKey": "AIzaSyBY5Okcw2RycSHL4tYvPkX7JjVPklSg3SA",
+    "authDomain": "studio-invitation.firebaseapp.com",
+    "projectId": "studio-invitation",
+    "storageBucket": "studio-invitation.firebasestorage.app",
+    "messagingSenderId": "252464430379",
+    "appId": "1:252464430379:web:001c64e5d67459542a996e"
+  },
   "types_evenement": [
     "Mariage",
     "Fiançailles",

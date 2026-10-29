@@ -145,7 +145,22 @@ footer{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}
     <div class="acts"><a class="btn" href="commande/index.html">Formulaire de commande</a><a class="btn wa" href="https://wa.me/261342754147?text=Bonjour%20Studio%20Fanasana%20%21%20Je%20voudrais%20une%20invitation%20num%C3%A9rique." target="_blank" rel="noopener">WhatsApp</a><a class="btn" href="tel:+261342754147">Appeler</a></div></div>
 </div></section>
 <footer>Studio Fanasana · Invitations numériques</footer>
-
+<script type="module">
+try {
+  const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+  const { getFirestore, collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+  const fs = getFirestore(initializeApp({"apiKey": "AIzaSyBY5Okcw2RycSHL4tYvPkX7JjVPklSg3SA", "authDomain": "studio-invitation.firebaseapp.com", "projectId": "studio-invitation", "storageBucket": "studio-invitation.firebasestorage.app", "messagingSenderId": "252464430379", "appId": "1:252464430379:web:001c64e5d67459542a996e"}));
+  (await getDocs(collection(fs, 'modeles'))).forEach(d => {
+    const m = d.data(), el = document.querySelector(`.model[data-modele="${CSS.escape(d.id)}"]`); if (!el) return;
+    if (m.visible === false) { el.hidden = true; el.dataset.cache = '1'; return; }
+    if (m.ordre) el.style.order = m.ordre;
+    if (m.nom) el.querySelector('[data-k=nom]').textContent = m.nom;
+    if (m.accroche) el.querySelector('[data-k=accroche]').textContent = m.accroche;
+    const p = el.querySelector('[data-k=prix]'); p.hidden = !m.prix; p.textContent = m.prix || '';
+    if (m.occasions) { const u = el.querySelector('[data-k=occasions]'); u.innerHTML = ''; m.occasions.forEach(o => { const li = document.createElement('li'); li.textContent = o; u.appendChild(li); }); }
+  });
+} catch (e) {}
+</script>
 <script>
 (function(){
   const bs = [...document.querySelectorAll('.types button')];
