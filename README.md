@@ -39,4 +39,15 @@ Les règles sont générées dans `firestore.rules` : à coller dans la console 
 ## Limites honnêtes
 
 - Une démonstration ne peut pas empêcher une capture d'écran : c'est pour cela que le filigrane est incrusté dans le film et posé sur les pages.
-- Le film de chaque client est un travail du studio (montage et rendu), il n'est pas généré par `build.py`.
+- Le film se crée avec `outils/film/creer_film.py` (voir ci-dessous), puis `build.py` le place dans le site.
+
+## Film d'ouverture
+
+Dans `evenements/<slug>/` : `photo1.jpg`, `photo2.jpg`… (dans l'ordre), `lieu1.jpg`, `lieu2.jpg` (facultatif), `music.mp3`,
+et `film.json` pour les textes du film (`titre`, `sous_titre`, `legendes`, `programme`, `lieux`, `verset`, voir `evenements/exemple-client/film.json`).
+
+1. `python3 outils/film/creer_film.py <slug> --apercu` : une image par scène dans `evenements/<slug>/.film/`, à regarder et corriger.
+2. `python3 outils/film/creer_film.py <slug>` : film complet 720 × 1280, 30 images/s, musique avec fondu, colombes en vol continu.
+3. `python3 build.py <slug>`.
+
+Pour un nouveau modèle de film, on ajoute ses scènes dans `creer_film.py` (fonctions `sc_…`).

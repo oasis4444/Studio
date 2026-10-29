@@ -2,3 +2,5 @@ tests/out/
 evenements/*/.cache-demo.*
 __pycache__/
 *bak*
+evenements/*/.film/
+evenements/*/film.part.mp4

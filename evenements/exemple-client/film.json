@@ -1,0 +1,41 @@
+{
+  "titre": "Mariage",
+  "legendes": [
+    {
+      "haut": "Une nouvelle page",
+      "texte": "Hery & Fara"
+    },
+    {
+      "haut": "Main dans la main",
+      "texte": "pour la vie"
+    }
+  ],
+  "programme": [
+    {
+      "heure": "10 h",
+      "texte": "Bénédiction nuptiale"
+    },
+    {
+      "heure": "12 h",
+      "texte": "Vin d'honneur"
+    },
+    {
+      "heure": "13 h",
+      "texte": "Déjeuner et soirée"
+    }
+  ],
+  "lieux": [
+    {
+      "moment": "10 h · Bénédiction",
+      "adresse": "Ambohijatovo, Antananarivo"
+    },
+    {
+      "moment": "12 h · Réception",
+      "adresse": "Antananarivo"
+    }
+  ],
+  "verset": {
+    "texte": "L'amour est patient, il est plein de bonté.",
+    "ref": "1 Corinthiens 13:4"
+  }
+}
