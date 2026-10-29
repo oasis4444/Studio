@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta property="og:title" content="Vous êtes invités · Mariage de Hery &amp; Fara"><meta property="og:description" content="Samedi 19 décembre 2026 · Église d&#x27;Ambohijatovo"><meta name="robots" content="noindex"><title>Invitation · Mariage de Hery &amp; Fara</title></head><body>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta property="og:title" content="Vous êtes invités · Mariage &amp; Baptême"><meta property="og:description" content="Samedi 12 décembre 2026 · Église"><meta name="robots" content="noindex"><title>Invitation · Mariage &amp; Baptême</title></head><body>
 <style>
 @font-face {
   font-family: 'Cormorant Garamond';
@@ -321,7 +321,7 @@ html.gen #s4 .maps{margin-top:70px!important;gap:36px!important;margin-left:-70p
 
   <!-- 0. film -->
   <section class="scene" id="s0">
-    <video id="film" playsinline webkit-playsinline preload="metadata" poster="film.jpg?v=40b0b732"><source src="film.mp4?v=86bca375" type="video/mp4"></video>
+    <video id="film" controlslist="nodownload noplaybackrate" disablepictureinpicture disableremoteplayback playsinline webkit-playsinline preload="metadata" poster="film.jpg?v=40b0b732"><source src="film.mp4?v=86bca375" type="video/mp4"></video>
     <button type="button" id="playBtn" hidden><span class="pb-i">▶</span><span class="pb-t">Touchez pour ouvrir<br>l’invitation</span></button>
     <button type="button" id="skipBtn">Passer ›</button>
     <button type="button" id="sndBtn" hidden>🔊&nbsp; Activer le son</button>
@@ -341,7 +341,7 @@ html.gen #s4 .maps{margin-top:70px!important;gap:36px!important;margin-left:-70p
         <div class="serif" style="font-size:86px;font-style:italic;line-height:1.2" id="fourLead">Nous sommes heureux d'inviter</div>
         <div class="n pop" style="--d:.9s;font-size:330px" id="seatsN">4</div>
         <div class="kicker" style="font-size:54px;color:var(--brown)" id="seatsW">personnes</div>
-        <div class="serif" style="font-size:86px;font-style:italic;line-height:1.2;margin-top:30px">pour partager ce bonheur avec nous</div>
+        <div class="serif" style="font-size:86px;font-style:italic;line-height:1.2;margin-top:30px">pour partager ce double bonheur avec nous</div>
         <div class="flw" data-g="bottom" style="--d:1.1s;left:50%;bottom:-120px;width:700px;height:230px;margin-left:-350px"></div>
       </div>
     </div>
@@ -403,8 +403,8 @@ const run=()=>document.querySelectorAll('.flw[data-g]').forEach(e=>{if(!e.firstC
         <div class="rsvp-note" id="rsvpNote" hidden></div>
         <div class="navc" id="navCard" hidden>
           <div class="script" style="font-size:62px;line-height:1">Transport offert</div>
-          <div class="kicker" style="font-size:26px;margin-top:6px">Église d&#x27;Ambohijatovo → Salle Les Jardins</div>
-          <p>Aller : Église d&#x27;Ambohijatovo → Salle Les Jardins.<br>Retour organisé selon votre quartier.</p>
+          <div class="kicker" style="font-size:26px;margin-top:6px">Église → Salle de réception</div>
+          <p>Aller : Église → Salle de réception.<br>Retour organisé selon votre quartier.</p>
           <div class="srow"><span class="slab">Places</span><div class="stepper"><button type="button" id="nMinus" aria-label="Une place de moins">−</button><output id="nCnt">1</output><button type="button" id="nPlus" aria-label="Une place de plus">+</button></div></div>
           <label for="nQ" class="nql">Veuillez indiquer votre quartier pour le retour :</label>
           <input id="nQ" maxlength="30" placeholder="Ex. : Analakely, Ivandry…" autocomplete="off">
@@ -420,8 +420,8 @@ const run=()=>document.querySelectorAll('.flw[data-g]').forEach(e=>{if(!e.firstC
         <a href="tel:+261340000002"><span class="script" style="font-size:72px">Fara</span><span class="num">034 00 000 02</span></a>
       </div>
       <div class="maps rv" style="--d:1.6s">
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Ambohijatovo" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>Map église</a>
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Antananarivo" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>Map salle</a>
+        <a href="https://www.google.com/maps" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>Map église</a>
+        <a href="https://www.google.com/maps" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>Map salle</a>
       </div>
     </div>
   </section>
@@ -441,7 +441,7 @@ const run=()=>document.querySelectorAll('.flw[data-g]').forEach(e=>{if(!e.firstC
       
       <div class="script rv" style="--d:1.2s;font-size:120px;line-height:1.12;margin-top:60px;text-wrap:balance">Votre présence sera pour nous un grand honneur</div>
       <svg class="orn rv" style="--d:1.8s;margin-top:50px" viewBox="0 0 440 40"><path d="M0 20H180M260 20H440" stroke="#a87c50" stroke-width="2"/><path d="M220 6 L234 20 L220 34 L206 20Z" fill="none" stroke="#a87c50" stroke-width="2"/><circle cx="220" cy="20" r="4" fill="#a87c50"/></svg>
-      <div class="kicker rv" style="--d:2.4s;margin-top:20px;font-size:25px;letter-spacing:.24em;white-space:nowrap">Mariage de Hery &amp; Fara · 19.12.2026</div>
+      <div class="kicker rv" style="--d:2.4s;margin-top:20px;font-size:25px;letter-spacing:.24em;white-space:nowrap">Mariage &amp; Baptême · 12.12.2026</div>
     </div>
   </section>
 
@@ -572,9 +572,9 @@ html.mode-admin #wrap{display:none}
 
 <script>
 (function(){
-const GUEST_URL = 'https://randnjara.github.io/studio/e/exemple-client/';
+const GUEST_URL = 'https://oasis4444.github.io/Studio/modeles/caramel/';
 const REPLY_WA = '261340000002';
-const MSGR = 'https://m.me/';
+const MSGR = 'https://wa.me/261340000002';
 const $ = s => document.querySelector(s);
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const enc = o => { let bin=''; new TextEncoder().encode(JSON.stringify(o)).forEach(x=>bin+=String.fromCharCode(x)); return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); };
@@ -681,8 +681,8 @@ function updateRsvp(){
   const who = guest ? guest.n : '';
   const pers = `${count} adulte${count > 1 ? 's' : ''}` + (kids ? ` et ${kids} enfant${kids > 1 ? 's' : ''}` : '');
   const setMsg = (q, txt) => { $(q).href = MSGR; $(q).dataset.msg = txt; };
-  setMsg('#yes', `Bonjour Hery et Fara ! ${who ? 'Ici ' + who + '. ' : ''}Nous confirmons notre présence à votre mariage le samedi 19 décembre 2026. Nous serons ${pers}.`);
-  setMsg('#no', `Bonjour Hery et Fara, ${who ? 'ici ' + who + '. ' : ''}Merci beaucoup pour votre invitation. Malheureusement nous ne pourrons pas être présents le 19 décembre 2026. Nous vous souhaitons une très belle fête !`);
+  setMsg('#yes', `Bonjour Hery et Fara ! ${who ? 'Ici ' + who + '. ' : ''}Nous confirmons notre présence à votre mariage et au baptême le samedi 12 décembre 2026. Nous serons ${pers}.`);
+  setMsg('#no', `Bonjour Hery et Fara, ${who ? 'ici ' + who + '. ' : ''}Merci beaucoup pour votre invitation. Malheureusement nous ne pourrons pas être présents le 12 décembre 2026. Nous vous souhaitons une très belle fête !`);
 }
 $('#minus').addEventListener('click', e => { e.stopPropagation(); count--; updateRsvp(); });
 $('#plus').addEventListener('click', e => { e.stopPropagation(); const max = guest ? guest.s : 20; if (count + kids >= max && kids > 0) kids--; count++; updateRsvp(); });
@@ -776,29 +776,42 @@ function startInvite(g, preview){
 $('#back').addEventListener('click', e => { e.stopPropagation(); startAdmin(); });
 
 // compte à rebours jusqu'au jour J
-(function(){ const T=1797663600000; const p=n=>String(n).padStart(2,'0');
+(function(){ const T=1797058800000; const p=n=>String(n).padStart(2,'0');
   function tick(){ let s=Math.max(0,Math.floor((T-Date.now())/1000)); const d=Math.floor(s/86400); s%=86400;
     const set=(id,v)=>{const e=document.getElementById(id); if(e) e.textContent=v;};
     set('cdD',d); set('cdH',p(Math.floor(s/3600))); set('cdM',p(Math.floor(s%3600/60))); set('cdS',p(s%60)); }
   tick(); setInterval(tick,1000); })();
 const m = location.search.match(/[?&]i=([A-Za-z0-9_-]+)/) || location.hash.match(/^#i\.([A-Za-z0-9_-]+)/);
-const demo = /[?&]demo\b/.test(location.search);
-window.__gInfo = m && !demo ? dec(m[1]) : null;
+const demo = true;
+window.__gInfo = m ? dec(m[1]) : null;
 startInvite(window.__gInfo);
 if (demo){ window.__demo = window.__preview = true; window.__rsvpInit && window.__rsvpInit(); }
 })();
 </script>
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-const fs = getFirestore(initializeApp({}));
-const EID = 'exemple-client';
-window.__saveRsvp = d => addDoc(collection(fs, 'evenements', EID, 'reponses'), d);
-// historique des ouvertures : une ligne par visite (pas pour la démonstration ni les robots)
-(() => { if (window.__demo || navigator.webdriver) return;
-  try { if (sessionStorage.getItem('vu')) return; sessionStorage.setItem('vu', '1'); } catch(e) {}
-  const g = window.__gInfo;
-  addDoc(collection(fs, 'evenements', EID, 'vues'), { fid: g && g.id ? String(g.id).slice(0, 60) : '', famille: g && g.n ? String(g.n).slice(0, 110) : 'Lien général', date: Date.now() }).catch(() => {});
-})();
-window.__rsvpInit && window.__rsvpInit();
-</script></body></html>
+
+<style>
+#wm{position:fixed;inset:0;z-index:60;pointer-events:none;overflow:hidden}
+#wm span{position:absolute;left:50%;top:50%;width:200vmax;margin-left:-100vmax;transform:translateY(-50%) rotate(-28deg);
+  font:600 13px/2.8 'Jost',sans-serif;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.34);
+  text-shadow:0 0 2px rgba(61,42,27,.35);white-space:pre-wrap;text-align:center;word-spacing:.6em}
+#demoBar{position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(61,42,27,.88);color:#f5ecdd;font:500 13px/1.2 'Jost',sans-serif;letter-spacing:.04em}
+#demoBar a{color:#3d2a1b;background:#f5ecdd;border-radius:30px;padding:8px 14px;text-decoration:none;font-weight:600;white-space:nowrap}
+#demoBar span{opacity:.9}
+img,video{-webkit-touch-callout:none;-webkit-user-drag:none}
+</style>
+<div id="wm" aria-hidden="true"><span style="margin-top:-90vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:-74vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:-58vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:-42vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:-26vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:-10vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:6vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:22vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:38vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:54vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:70vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span>
+<span style="margin-top:86vh">MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      MODÈLE DE DÉMONSTRATION · Studio Fanasana      </span></div>
+<div id="demoBar"><span>Modèle de démonstration</span><a href="../../index.html#commander" target="_top">Commander ce modèle</a></div>
+<script>window.__saveRsvp = () => Promise.resolve(); /* démonstration : rien n'est envoyé */document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('dragstart',e=>e.preventDefault());</script>
+</body></html>

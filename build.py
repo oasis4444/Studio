@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Génère tout le site du studio dans site/ :
+"""Génère tout le site du studio dans docs/ :
 
-  site/index.html                    vitrine (catalogue des modèles, essai, commande)
-  site/modeles/<modèle>/             démonstration protégée de chaque modèle (filigrane, rien n'est enregistré)
-  site/e/<slug>/                     invitation d'un client
-  site/e/<slug>/gestion/             gestion des invités du client (connexion Google)
-  site/admin/                        admin du studio (accès des clients, paiement)
+  docs/index.html                    vitrine (catalogue des modèles, essai, commande)
+  docs/modeles/<modèle>/             démonstration protégée de chaque modèle (filigrane, rien n'est enregistré)
+  docs/e/<slug>/                     invitation d'un client
+  docs/e/<slug>/gestion/             gestion des invités du client (connexion Google)
+  docs/admin/                        admin du studio (accès des clients, paiement)
 
 Usage : python3 build.py            (tout)
         python3 build.py <slug>     (un seul événement + vitrine + admin)
@@ -14,7 +14,7 @@ import hashlib, html, json, re, shutil, subprocess, sys, unicodedata, pathlib
 from datetime import datetime, timedelta
 
 ROOT = pathlib.Path(__file__).resolve().parent
-SITE = ROOT / 'site'
+SITE = ROOT / 'docs'
 STUDIO = json.loads((ROOT / 'studio.json').read_text())
 
 JOURS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']

@@ -1,6 +1,6 @@
 # Studio Fanasana — invitations numériques
 
-Un seul dépôt GitHub (site gratuit sur GitHub Pages) et un seul projet Firebase pour tous les clients.
+Un seul dépôt GitHub (site sur GitHub Pages, dossier docs/ de la branche main) et un seul projet Firebase pour tous les clients.
 
 | Adresse | Pour qui | Ce qu'on y fait |
 |---|---|---|

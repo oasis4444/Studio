@@ -6,7 +6,7 @@ import json, re, subprocess, sys, time, pathlib, functools, http.server, threadi
 from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SITE, OUT, FAKE = ROOT / 'site', ROOT / 'tests' / 'out', ROOT / 'tests' / 'fake'
+SITE, OUT, FAKE = ROOT / 'docs', ROOT / 'tests' / 'out', ROOT / 'tests' / 'fake'
 OUT.mkdir(exist_ok=True)
 XLSX = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else None
 tpl = (ROOT / 'modeles' / 'caramel' / 'invitation.html').read_text()
