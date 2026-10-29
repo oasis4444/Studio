@@ -1,0 +1,86 @@
+<style>
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:4px 0 6px;overflow-x:auto}
+.tabs button{font:500 13px var(--sans);letter-spacing:.12em;text-transform:uppercase;background:none;border:0;border-bottom:2.5px solid transparent;padding:12px 14px;color:var(--brown);cursor:pointer;white-space:nowrap}
+.tabs button[aria-selected="true"]{border-bottom-color:var(--brown);font-weight:600}
+.tabs .n{display:inline-block;min-width:18px;margin-left:6px;border-radius:10px;background:var(--no);color:#fff;font-size:11px;padding:1px 5px;letter-spacing:0}
+.tabs .n:empty{display:none}
+.panel[hidden]{display:none}
+.cmd{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:14px 0}
+.cmd.new{border-color:rgba(154,74,52,.45);box-shadow:0 0 0 2px rgba(154,74,52,.08)}
+.cmd dl{display:grid;grid-template-columns:minmax(110px,auto) 1fr;gap:4px 12px;margin:10px 0;font-size:14px}
+.cmd dt{opacity:.65}
+.cmd dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;min-width:0}
+.mod{display:grid;grid-template-columns:96px 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:14px 0}
+.mod img{width:96px;height:128px;object-fit:cover;border-radius:12px;background:var(--sand)}
+.howto{background:#fff8ee;border:1px dashed rgba(107,74,47,.35);border-radius:18px;padding:16px;margin:14px 0}
+.howto ol{margin:6px 0 0;padding-left:20px}
+@media (max-width:520px){.mod{grid-template-columns:1fr}.mod img{width:100%;height:180px}}
+</style>
+<script type="module">
+import { collection, doc, getDocs, setDoc, updateDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+const $ = s => document.querySelector(s);
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let tt; const toast = t => { const e = $('#toast'); e.textContent = t; e.hidden = false; clearTimeout(tt); tt = setTimeout(() => e.hidden = true, 3200); };
+const STATUTS = ['Nouvelle', 'Devis envoyé', 'Acompte reçu', 'En création', 'Livrée', 'Annulée'];
+const LAB = { modele:'Modèle', type:'Événement', hotes:'Hôtes', nom_famille:'Nom de famille', enfant:'Enfant', date:'Date', date_limite:'Réponses jusqu’au', programme:'Programme', lieu1:'Lieu 1', maps1:'Maps 1', lieu2:'Lieu 2', maps2:'Maps 2', telephones:'Téléphones', facebook:'Facebook', verset:'Verset', style:'Style', medias:'Photos / vidéos', musique:'Musique', contact_nom:'Nom', contact_tel:'WhatsApp', gmails:'Gmail Gestion', message:'Message' };
+const wa = t => { const d = String(t).replace(/\D/g, ''); return d.startsWith('0') ? '261' + d.slice(1) : d; };
+// onglets
+const tabs = [...document.querySelectorAll('.tabs button')];
+const pick = id => { tabs.forEach(b => b.setAttribute('aria-selected', b.dataset.p === id)); document.querySelectorAll('.panel').forEach(p => p.hidden = p.id !== id); try { localStorage.setItem('adminTab', id); } catch (e) {} };
+tabs.forEach(b => b.addEventListener('click', () => pick(b.dataset.p)));
+let first = 'pCmd'; try { first = localStorage.getItem('adminTab') || first; } catch (e) {}
+pick(first);
+
+window.addEventListener('studio-admin', ({ detail: { fs } }) => {
+  $('.tabs').hidden = false;
+  // ----- commandes -----
+  onSnapshot(collection(fs, 'commandes'), s => {
+    const all = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.cree || 0) - (a.cree || 0));
+    $('#nCmd').textContent = all.filter(c => c.statut === 'Nouvelle').length || '';
+    $('#cmdList').innerHTML = all.map(c => `<article class="cmd${c.statut === 'Nouvelle' ? ' new' : ''}" data-id="${esc(c.id)}">
+      <div class="ev-h"><h3>${esc(c.hotes || c.contact_nom || 'Sans nom')}${c.type ? ' · ' + esc(c.type) : ''}</h3><span class="pill${c.statut === 'Livrée' ? ' on' : c.statut === 'Nouvelle' ? ' off' : ''}">${esc(c.statut)}</span></div>
+      <div class="meta">Reçue le ${new Date(c.cree).toLocaleString('fr-FR', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}</div>
+      <dl>${Object.keys(LAB).filter(k => c[k]).map(k => `<dt>${LAB[k]}</dt><dd>${/^https?:\/\//.test(c[k]) ? `<a href="${esc(c[k])}" target="_blank" rel="noopener">${esc(c[k])}</a>` : esc(c[k])}</dd>`).join('')}</dl>
+      <div class="row"><label style="flex-direction:row;align-items:center;gap:8px">Statut <select data-st style="width:auto">${STATUTS.map(x => `<option${x === c.statut ? ' selected' : ''}>${x}</option>`).join('')}</select></label>
+        ${c.contact_tel ? `<a class="btn sm wa" href="https://wa.me/${wa(c.contact_tel)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+        <button class="btn sm sec" type="button" data-fiche>Copier la fiche pour Claude</button>
+        <button class="btn sm sec" type="button" data-del>Supprimer</button></div>
+    </article>`).join('') || '<div class="msg">Aucune commande pour l’instant. Le formulaire est sur la vitrine (bouton « Commander »).</div>';
+    document.querySelectorAll('.cmd').forEach(el => { const c = all.find(x => x.id === el.dataset.id);
+      el.querySelector('[data-st]').onchange = e => updateDoc(doc(fs, 'commandes', c.id), { statut: e.target.value }).then(() => toast('Statut : ' + e.target.value)).catch(err => toast('Refusé : ' + err.code));
+      el.querySelector('[data-del]').onclick = () => { if (confirm(`Supprimer la commande de ${c.contact_nom || 'ce client'} ?`)) deleteDoc(doc(fs, 'commandes', c.id)).then(() => toast('Commande supprimée')).catch(err => toast('Refusé : ' + err.code)); };
+      el.querySelector('[data-fiche]').onclick = async () => {
+        const t = 'FICHE ÉVÉNEMENT (commande du ' + new Date(c.cree).toLocaleDateString('fr-FR') + ')\n' + Object.keys(LAB).filter(k => c[k]).map(k => `${LAB[k]} : ${c[k]}`).join('\n')
+          + '\n\nCrée l’événement dans le studio avec ce modèle, puis le film d’ouverture avec les photos et la musique jointes.';
+        try { await navigator.clipboard.writeText(t); toast('Fiche copiée : collez-la dans la conversation avec Claude'); } catch (e) { prompt('Copiez la fiche :', t); }
+      };
+    });
+  }, e => { $('#cmdList').innerHTML = '<div class="msg err">Lecture refusée (' + esc(e.code) + '). Republiez les règles Firestore du studio.</div>'; });
+
+  // ----- modèles -----
+  (async () => {
+    const list = await (await fetch('modeles.json?t=' + Date.now())).json();
+    let docs = {}; try { (await getDocs(collection(fs, 'modeles'))).forEach(d => docs[d.id] = d.data()); } catch (e) {}
+    $('#modList').innerHTML = list.map((m, i) => { const d = { visible: true, ordre: i + 1, ...m, ...(docs[m.modele] || {}) };
+      return `<article class="mod" data-m="${esc(m.modele)}"><img src="../modeles/${esc(m.modele)}/film.jpg" alt="">
+      <div><div class="ev-h"><h3>${esc(d.nom)}</h3><span class="pill ${d.visible ? 'on' : 'off'}">${d.visible ? 'Sur la vitrine' : 'Caché'}</span></div>
+        <div class="links"><a class="btn sm sec" href="../modeles/${esc(m.modele)}/index.html" target="_blank" rel="noopener">Voir la démo</a></div>
+        <div class="grid">
+          <label>Nom<input data-f="nom" value="${esc(d.nom)}" maxlength="40"></label>
+          <label>Prix affiché<input data-f="prix" value="${esc(d.prix || '')}" maxlength="40" placeholder="ex. à partir de 150 000 Ar"></label>
+          <label>Description<input data-f="accroche" value="${esc(d.accroche || '')}" maxlength="140"></label>
+          <label>Occasions<input data-f="occasions" value="${esc((d.occasions || []).join(', '))}" maxlength="140"></label>
+          <label>Ordre<input data-f="ordre" type="number" min="1" value="${esc(d.ordre)}"></label>
+        </div>
+        <div class="row"><label class="chk"><input type="checkbox" data-f="visible" ${d.visible ? 'checked' : ''}> Afficher sur la vitrine</label>
+          <button class="btn sm" type="button" data-save>Enregistrer</button></div></div></article>`; }).join('');
+    document.querySelectorAll('.mod').forEach(el => el.querySelector('[data-save]').onclick = async () => {
+      const v = k => el.querySelector(`[data-f="${k}"]`);
+      const data = { nom: v('nom').value.trim().slice(0, 40), prix: v('prix').value.trim().slice(0, 40), accroche: v('accroche').value.trim().slice(0, 140),
+        occasions: v('occasions').value.split(',').map(x => x.trim()).filter(Boolean).slice(0, 6), ordre: parseInt(v('ordre').value, 10) || 1, visible: v('visible').checked };
+      try { await setDoc(doc(fs, 'modeles', el.dataset.m), data); toast('Modèle enregistré : la vitrine est à jour'); const p = el.querySelector('.pill'); p.className = 'pill ' + (data.visible ? 'on' : 'off'); p.textContent = data.visible ? 'Sur la vitrine' : 'Caché'; el.querySelector('h3').textContent = data.nom; }
+      catch (e) { toast('Refusé : ' + (e.code || e.message)); }
+    });
+  })();
+});
+</script>

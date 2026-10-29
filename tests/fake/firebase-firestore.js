@@ -7,6 +7,9 @@ const user = () => window.__FAKE_USER ? String(window.__FAKE_USER.email).toLower
 const denied = () => Object.assign(new Error('Missing or insufficient permissions.'), { code: 'permission-denied' });
 function allowed(path, write) {
   const p = path.split('/');
+  const studio0 = (window.__FAKE_ADMINS || []).includes(user());
+  if (p[0] === 'commandes') return write === 'create' || studio0;
+  if (p[0] === 'modeles') return !write || studio0;
   if (p[0] !== 'evenements') return false;
   const db = load(), ev = (db['evenements'] || {})[p[1]];
   const studio = (window.__FAKE_ADMINS || []).includes(user());

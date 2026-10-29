@@ -1,3 +1,4 @@
 tests/out/
 evenements/*/.cache-demo.*
 __pycache__/
+*bak*

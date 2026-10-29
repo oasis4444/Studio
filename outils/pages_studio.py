@@ -37,17 +37,18 @@ def vitrine(studio, catalogue):
         base = f"modeles/{m['modele']}/index.html"
         img = f"modeles/{m['modele']}/film.jpg"
         occ = ''.join(f'<li>{h(o)}</li>' for o in m.get('occasions', []))
-        order = (f'<a class="btn wa sm" href="https://wa.me/{wa}?text=' + urllib.parse.quote(f"Bonjour {studio['nom']} ! Je voudrais le modèle {m.get('nom', m['modele'])}.") + '" target="_blank" rel="noopener">Commander ce modèle</a>') if wa else ''
+        order = f'<a class="btn wa sm" href="commande/index.html?modele={h(m["modele"])}">Commander ce modèle</a>'
         cards.append(f"""
-    <article class="model">
+    <article class="model" data-modele="{h(m['modele'])}" style="order:{m.get('ordre', 0)}">
       <a class="poster" href="{base}" aria-label="Essayer le modèle {h(m.get('nom', m['modele']))}">
         <img src="{img}" alt="Aperçu du modèle {h(m.get('nom', m['modele']))}" loading="lazy" draggable="false">
         <span class="play" aria-hidden="true">▶</span><span class="tag">Démo</span>
       </a>
       <div class="m-body">
-        <h3>{h(m.get('nom', m['modele']))}</h3>
-        <p>{h(m.get('accroche', ''))}</p>
-        <ul class="occ">{occ}</ul>
+        <h3 data-k="nom">{h(m.get('nom', m['modele']))}</h3>
+        <p data-k="accroche">{h(m.get('accroche', ''))}</p>
+        <p class="prix" data-k="prix" hidden></p>
+        <ul class="occ" data-k="occasions">{occ}</ul>
         <div class="m-acts">
           <a class="btn sm" href="{base}">Essayer · lien général</a>
           <a class="btn sm sec" href="{base}{m['perso']}">Essayer · lien personnel</a>
@@ -77,6 +78,23 @@ def vitrine(studio, catalogue):
     send = ['Type d’événement, prénoms, date et programme avec les heures', 'Lieux et liens Google Maps', 'Date limite de réponse',
             'Téléphones et lien Facebook ou Messenger à afficher', 'Photos et vidéos, musique', 'Liste d’invités Excel (vous pouvez aussi l’ajouter plus tard)',
             'Adresses Gmail qui auront accès à la Gestion']
+    fbc = studio.get('firebase')
+    reglages = ('''<script type="module">
+try {
+  const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+  const { getFirestore, collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+  const fs = getFirestore(initializeApp(__FB__));
+  (await getDocs(collection(fs, 'modeles'))).forEach(d => {
+    const m = d.data(), el = document.querySelector(`.model[data-modele="${CSS.escape(d.id)}"]`); if (!el) return;
+    if (m.visible === false) { el.hidden = true; return; }
+    if (m.ordre) el.style.order = m.ordre;
+    if (m.nom) el.querySelector('[data-k=nom]').textContent = m.nom;
+    if (m.accroche) el.querySelector('[data-k=accroche]').textContent = m.accroche;
+    const p = el.querySelector('[data-k=prix]'); p.hidden = !m.prix; p.textContent = m.prix || '';
+    if (m.occasions) { const u = el.querySelector('[data-k=occasions]'); u.innerHTML = ''; m.occasions.forEach(o => { const li = document.createElement('li'); li.textContent = o; u.appendChild(li); }); }
+  });
+} catch (e) {}
+</script>'''.replace('__FB__', json.dumps(fbc))) if fbc else ''
     return f"""<!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{h(studio['nom'])} · Invitations numériques</title>
@@ -85,11 +103,22 @@ def vitrine(studio, catalogue):
 {FONTS}
 <style>{BASE_CSS}
 header.hero{{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,#efe2cc,var(--linen) 70%);border-bottom:1px solid var(--line)}}
-.hero .wrap{{padding-top:22px;padding-bottom:56px;text-align:center}}
-.top{{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:46px}}
-.brand{{font:400 30px/1 var(--script);color:var(--brown);text-decoration:none}}
-.top nav{{display:flex;gap:16px;font:500 13px var(--sans);letter-spacing:.08em;text-transform:uppercase}}
-.top nav a{{text-decoration:none;color:var(--brown)}}
+.hero .wrap{{padding-top:42px;padding-bottom:56px;text-align:center}}
+/* en-tête et pied de page fixes */
+body{{padding-top:calc(58px + env(safe-area-inset-top,0px));padding-bottom:calc(66px + env(safe-area-inset-bottom,0px))}}
+section{{scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}}
+.topbar{{position:fixed;left:0;right:0;top:0;z-index:20;background:rgba(247,240,228,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}}
+.topbar .wrap{{display:flex;justify-content:space-between;align-items:center;gap:12px;height:58px}}
+.brand{{font:400 30px/1 var(--script);color:var(--brown);text-decoration:none;white-space:nowrap}}
+.topbar nav{{display:flex;gap:16px;font:500 12.5px var(--sans);letter-spacing:.1em;text-transform:uppercase}}
+.topbar nav a{{text-decoration:none;color:var(--brown)}}
+.botbar{{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--espresso);color:var(--paper);padding-bottom:env(safe-area-inset-bottom,0px)}}
+.botbar .wrap{{display:flex;align-items:center;justify-content:space-between;gap:10px;height:66px}}
+.botbar small{{font-size:12.5px;opacity:.75;line-height:1.3}}
+.botbar .acts{{display:flex;gap:8px}}
+.botbar .btn{{padding:11px 16px;font-size:14px;background:var(--paper);color:var(--brown);border-color:var(--paper)}}
+.botbar .btn.wa{{background:#4f8a4f;border-color:#4f8a4f;color:#fff}}
 .hero h1{{font:400 clamp(52px,13vw,96px)/1 var(--script);color:var(--brown);margin:14px 0 10px}}
 .hero p.lead{{font:italic 400 clamp(20px,4.6vw,26px)/1.35 var(--serif);max-width:620px;margin:0 auto 26px}}
 .hero .acts{{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}}
@@ -106,6 +135,7 @@ section{{padding:56px 0;border-bottom:1px solid var(--line)}}
 .m-body h3{{margin:0;font:400 40px/1 var(--script);color:var(--brown)}}
 .m-body p{{margin:0;font:italic 19px/1.35 var(--serif)}}
 .occ{{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}}
+.prix{{font:600 15px var(--sans);color:var(--brown);margin:0}}
 .occ li{{font-size:12.5px;border:1px solid var(--line);border-radius:20px;padding:3px 10px;background:#fff8ee}}
 .m-acts{{display:flex;flex-wrap:wrap;gap:8px}}
 .m-acts:empty{{display:none}}
@@ -133,11 +163,11 @@ section{{padding:56px 0;border-bottom:1px solid var(--line)}}
 .price h3{{margin:0;font:600 24px var(--serif)}} .price .amt{{font:600 30px var(--sans);color:var(--brown);margin:4px 0 8px}}
 .note{{font:italic 19px/1.4 var(--serif)}}
 footer{{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}}
-@media (max-width:560px){{.top nav{{display:none}} section{{padding:44px 0}}}}
+@media (max-width:560px){{.topbar nav a.opt{{display:none}} .botbar small{{display:none}} .botbar .acts{{flex:1}} .botbar .btn{{flex:1}} section{{padding:44px 0}}}}
 </style></head><body>
+<div class="topbar"><div class="wrap"><a class="brand" href="#">{h(studio['nom'])}</a>
+  <nav><a href="#modeles">Modèles</a><a class="opt" href="#inclus">Inclus</a><a href="#commander">Commander</a></nav></div></div>
 <header class="hero"><div class="wrap">
-  <div class="top"><a class="brand" href="#">{h(studio['nom'])}</a>
-    <nav><a href="#modeles">Modèles</a><a href="#inclus">Inclus</a><a href="#commander">Commander</a></nav></div>
   <div class="kicker">Mariage · Anniversaire de mariage · Baptême</div>
   <h1>Vos invitations,<br>en film</h1>
   <svg class="orn" viewBox="0 0 200 18" aria-hidden="true"><path d="M0 9H80M120 9H200" stroke="#a87c50" stroke-width="1.5"/><path d="M100 2 L107 9 L100 16 L93 9Z" fill="none" stroke="#a87c50" stroke-width="1.5"/></svg>
@@ -147,7 +177,7 @@ footer{{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}}
 
 <section id="modeles"><div class="wrap">
   <div class="kicker">Catalogue</div><h2>Essayez nos modèles</h2>
-  <p>Ouvrez un modèle sur votre téléphone : vous voyez exactement ce que vos invités verront. Les démonstrations portent un filigrane et rien n’y est enregistré ni téléchargeable : nous créons ensuite votre invitation avec vos textes, photos et musique.</p>
+  <p>Ouvrez un modèle sur votre téléphone : vous voyez exactement ce que vos invités verront. Touchez « Personnaliser » pour essayer vos prénoms, vos dates, vos lieux et vos photos. Rien n’est enregistré : nous créons ensuite votre invitation et votre film avec vos textes, photos et musique.</p>
   <div class="models">{''.join(cards)}
     <div class="soon"><h3>Sur mesure</h3><p>Couleurs, fleurs, écriture, scènes du film : nous pouvons créer un modèle à votre image.</p></div>
   </div>
@@ -167,10 +197,13 @@ footer{{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}}
 <section id="commander"><div class="wrap order">
   <div><div class="kicker">Commander</div><h2>Ce qu’il nous faut</h2><ul>{''.join(f'<li>{h(x)}</li>' for x in send)}</ul>
     <p class="note" style="margin-top:16px">Les photos, vidéos et la musique doivent vous appartenir ou être libres de droits.</p></div>
-  <div class="cta"><h3>Parlons de votre fête</h3><p>Dites-nous la date et le modèle qui vous plaît, nous vous répondons avec un devis.</p>
-    <div class="acts">{f'<a class="btn wa" href="{h(wa_link)}" target="_blank" rel="noopener">WhatsApp</a>' if wa_link else ''}{f'<a class="btn" href="{h(studio["facebook"])}" target="_blank" rel="noopener">Facebook</a>' if studio.get('facebook') else ''}{f'<a class="btn" href="tel:+{wa}">Appeler</a>' if wa else ''}</div></div>
+  <div class="cta"><h3>Parlons de votre fête</h3><p>Remplissez le formulaire de commande : nous vous répondons sur WhatsApp avec un devis.</p>
+    <div class="acts"><a class="btn" href="commande/index.html">Formulaire de commande</a>{f'<a class="btn wa" href="{h(wa_link)}" target="_blank" rel="noopener">WhatsApp</a>' if wa_link else ''}{f'<a class="btn" href="{h(studio["facebook"])}" target="_blank" rel="noopener">Facebook</a>' if studio.get('facebook') else ''}{f'<a class="btn" href="tel:+{wa}">Appeler</a>' if wa else ''}</div></div>
 </div></section>
 <footer>{h(studio['nom'])} · Invitations numériques</footer>
+{reglages}
+<div class="botbar"><div class="wrap"><small>Mariage · Anniversaire de mariage · Baptême</small>
+  <div class="acts"><a class="btn" href="#modeles">Essayer un modèle</a><a class="btn wa" href="commande/index.html">Commander</a></div></div></div>
 </body></html>"""
 
 
@@ -212,8 +245,13 @@ textarea{{min-height:64px;resize:vertical}}
 <main class="wrap">
   <div id="login" class="msg" hidden><p style="margin-top:0">Connectez-vous avec un compte Google du studio.</p><button class="btn" id="gLogin" type="button">Se connecter avec Google</button><p id="lErr" class="st"></p></div>
   <div id="noFb" class="msg err" hidden>La configuration Firebase n’est pas encore dans <b>studio.json</b>. Ajoutez-la puis reconstruisez le site.</div>
+  <nav class="tabs" role="tablist" hidden><button type="button" data-p="pCmd">Commandes<span class="n" id="nCmd"></span></button><button type="button" data-p="pCli">Clients</button><button type="button" data-p="pMod">Modèles</button></nav>
+  <section class="panel" id="pCmd"><div id="cmdList"></div></section>
+  <section class="panel" id="pMod"><div class="howto"><b>Ajouter un nouveau modèle</b><ol><li>Envoyez à Claude, dans la conversation, les vidéos ou images du modèle et l’ambiance voulue.</li><li>Claude crée le modèle (pages, film de démonstration) et le publie sur la vitrine.</li><li>Ici, vous réglez son nom, son prix, sa description, son ordre, et s’il est visible.</li></ol></div><div id="modList"></div></section>
+  <section class="panel" id="pCli">
   <div id="intro" class="msg" hidden>Chaque événement doit être <b>activé</b> ici pour que les invités puissent répondre. Ajoutez les adresses Gmail du client : lui seul (et le studio) verra sa Gestion. L’adresse « dépenses » voit en plus les dépenses et la check-list.</div>
   <div id="list"></div>
+  </section>
 </main>
 <div class="toast" id="toast" hidden></div>
 <script type="module">
@@ -277,10 +315,12 @@ onAuthStateChanged(auth, u => {{
   const m = String(u.email || '').toLowerCase();
   $('#who').innerHTML = esc(m) + ' · <a href="#" id="out">changer</a>'; $('#out').onclick = ev => {{ ev.preventDefault(); signOut(auth); }};
   if (!ADMINS.includes(m)) {{ $('#login').hidden = false; $('#lErr').textContent = 'Ce compte n’est pas un compte du studio.'; $('#list').innerHTML = ''; return; }}
-  $('#login').hidden = true; load();
+  $('#login').hidden = true; load(); window.dispatchEvent(new CustomEvent('studio-admin', {{ detail: {{ fs }} }}));
 }});
 $('#gLogin').onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(e => $('#lErr').textContent = 'Connexion impossible (' + e.code + ').');
-</script></body></html>""".replace('{j_studio}', studio['nom'].replace('`', '').replace('\\', ''))
+</script>
+__EXTRA__
+</body></html>""".replace('__EXTRA__', open(__file__.replace('pages_studio.py', 'admin_extra.html')).read()).replace('{j_studio}', studio['nom'].replace('`', '').replace('\\', ''))
 
 
 def rules(studio):
@@ -292,6 +332,29 @@ service cloud.firestore {{
   match /databases/{{database}}/documents {{
     function mail() {{ return request.auth != null && request.auth.token.email_verified == true ? request.auth.token.email.lower() : ''; }}
     function isStudio() {{ return mail() in [{admins}]; }}
+
+    match /commandes/{{id}} {{
+      function txt(d, k, n) {{ return !(k in d) || (d[k] is string && d[k].size() <= n); }}
+      allow create: if request.resource.data.keys().hasOnly(['modele', 'type', 'hotes', 'nom_famille', 'enfant', 'date', 'date_limite', 'programme',
+            'lieu1', 'maps1', 'lieu2', 'maps2', 'telephones', 'facebook', 'verset', 'style', 'medias', 'musique', 'contact_nom', 'contact_tel',
+            'gmails', 'message', 'statut', 'cree'])
+        && request.resource.data.statut == 'Nouvelle' && request.resource.data.cree is int
+        && request.resource.data.contact_tel is string && request.resource.data.contact_tel.size() <= 30
+        && request.resource.data.contact_nom is string && request.resource.data.contact_nom.size() <= 80
+        && txt(request.resource.data, 'programme', 1500) && txt(request.resource.data, 'message', 1500) && txt(request.resource.data, 'verset', 600)
+        && txt(request.resource.data, 'modele', 40) && txt(request.resource.data, 'type', 80) && txt(request.resource.data, 'hotes', 80)
+        && txt(request.resource.data, 'nom_famille', 80) && txt(request.resource.data, 'enfant', 80) && txt(request.resource.data, 'date', 10)
+        && txt(request.resource.data, 'date_limite', 10) && txt(request.resource.data, 'lieu1', 120) && txt(request.resource.data, 'lieu2', 120)
+        && txt(request.resource.data, 'maps1', 400) && txt(request.resource.data, 'maps2', 400) && txt(request.resource.data, 'telephones', 200)
+        && txt(request.resource.data, 'facebook', 300) && txt(request.resource.data, 'style', 300) && txt(request.resource.data, 'medias', 400)
+        && txt(request.resource.data, 'musique', 200) && txt(request.resource.data, 'gmails', 200);
+      allow read, update, delete: if isStudio();
+    }}
+
+    match /modeles/{{id}} {{
+      allow read: if true;
+      allow write: if isStudio();
+    }}
 
     match /evenements/{{eid}} {{
       function ev() {{ return get(/databases/$(database)/documents/evenements/$(eid)).data; }}
@@ -333,3 +396,11 @@ service cloud.firestore {{
   }}
 }}
 """
+
+
+def commande(studio, catalogue):
+    t = open(__file__.replace('pages_studio.py', 'commande.html')).read()
+    opts = ''.join(f'<option value="{h(m["modele"])}">{h(m.get("nom", m["modele"]))}</option>' for m in catalogue)
+    return (t.replace('__NOM__', h(studio['nom'])).replace('__FONTS__', FONTS).replace('__BASE_CSS__', BASE_CSS)
+             .replace('__OPTIONS__', opts).replace('__FB__', json.dumps(studio.get('firebase') or None))
+             .replace('__WA__', tel_intl(studio.get('whatsapp', ''), studio.get('indicatif', '261'))))

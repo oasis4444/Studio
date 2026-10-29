@@ -6,6 +6,29 @@ service cloud.firestore {
     function mail() { return request.auth != null && request.auth.token.email_verified == true ? request.auth.token.email.lower() : ''; }
     function isStudio() { return mail() in ["oasismdg3434@gmail.com"]; }
 
+    match /commandes/{id} {
+      function txt(d, k, n) { return !(k in d) || (d[k] is string && d[k].size() <= n); }
+      allow create: if request.resource.data.keys().hasOnly(['modele', 'type', 'hotes', 'nom_famille', 'enfant', 'date', 'date_limite', 'programme',
+            'lieu1', 'maps1', 'lieu2', 'maps2', 'telephones', 'facebook', 'verset', 'style', 'medias', 'musique', 'contact_nom', 'contact_tel',
+            'gmails', 'message', 'statut', 'cree'])
+        && request.resource.data.statut == 'Nouvelle' && request.resource.data.cree is int
+        && request.resource.data.contact_tel is string && request.resource.data.contact_tel.size() <= 30
+        && request.resource.data.contact_nom is string && request.resource.data.contact_nom.size() <= 80
+        && txt(request.resource.data, 'programme', 1500) && txt(request.resource.data, 'message', 1500) && txt(request.resource.data, 'verset', 600)
+        && txt(request.resource.data, 'modele', 40) && txt(request.resource.data, 'type', 80) && txt(request.resource.data, 'hotes', 80)
+        && txt(request.resource.data, 'nom_famille', 80) && txt(request.resource.data, 'enfant', 80) && txt(request.resource.data, 'date', 10)
+        && txt(request.resource.data, 'date_limite', 10) && txt(request.resource.data, 'lieu1', 120) && txt(request.resource.data, 'lieu2', 120)
+        && txt(request.resource.data, 'maps1', 400) && txt(request.resource.data, 'maps2', 400) && txt(request.resource.data, 'telephones', 200)
+        && txt(request.resource.data, 'facebook', 300) && txt(request.resource.data, 'style', 300) && txt(request.resource.data, 'medias', 400)
+        && txt(request.resource.data, 'musique', 200) && txt(request.resource.data, 'gmails', 200);
+      allow read, update, delete: if isStudio();
+    }
+
+    match /modeles/{id} {
+      allow read: if true;
+      allow write: if isStudio();
+    }
+
     match /evenements/{eid} {
       function ev() { return get(/databases/$(database)/documents/evenements/$(eid)).data; }
       function isClient() { return mail() != '' && mail() in ev().get('clients', []); }

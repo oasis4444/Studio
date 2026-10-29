@@ -1,0 +1,127 @@
+<!-- Démonstration personnalisable : le visiteur essaie ses propres textes et photos. Rien n'est envoyé ni enregistré. -->
+<style>
+#demoBar{position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+  padding:8px max(12px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
+  background:rgba(61,42,27,.9);color:#f5ecdd;font:500 13px/1.2 'Jost',sans-serif;letter-spacing:.04em}
+#demoBar a,#demoBar button{font:600 13px/1 'Jost',sans-serif;letter-spacing:.04em;border-radius:30px;padding:10px 15px;text-decoration:none;white-space:nowrap;cursor:pointer;border:1.5px solid #f5ecdd}
+#demoBar .ed{background:#f5ecdd;color:#3d2a1b}
+#demoBar .cmd{background:transparent;color:#f5ecdd}
+#demoBar .tag{opacity:.75;font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+img,video{-webkit-touch-callout:none;-webkit-user-drag:none}
+#edSheet{position:fixed;left:0;right:0;bottom:0;z-index:80;max-height:86vh;overflow:auto;background:#fbf6ee;color:#3d2a1b;border-radius:22px 22px 0 0;
+  box-shadow:0 -12px 40px rgba(40,25,12,.35);padding:18px max(16px,env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+  font:400 15px/1.4 'Jost',sans-serif;transform:translateY(105%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+#edSheet.open{transform:none}
+#edSheet h2{margin:0;font:400 34px/1 'Great Vibes',cursive;color:#6b4a2f}
+#edSheet .sub{margin:4px 0 12px;font-size:13px;opacity:.75}
+#edSheet fieldset{border:0;margin:0 0 12px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
+#edSheet legend{font:500 11.5px 'Jost',sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#a87c50;margin-bottom:6px;padding:0}
+#edSheet label{display:flex;flex-direction:column;gap:3px;font-size:12.5px;font-weight:500;min-width:0}
+#edSheet label.w{grid-column:1/-1}
+#edSheet input{font:16px 'Jost',sans-serif;padding:9px 11px;border:1.5px solid rgba(107,74,47,.28);border-radius:11px;background:#fffdf9;color:#3d2a1b;width:100%;box-sizing:border-box;min-width:0}
+#edSheet input:focus{outline:2px solid #a87c50;outline-offset:1px}
+#edThumbs{display:flex;gap:6px;flex-wrap:wrap;grid-column:1/-1}
+#edThumbs img{width:58px;height:58px;object-fit:cover;border-radius:10px;border:1px solid rgba(107,74,47,.25)}
+#edSheet .acts{position:sticky;bottom:-18px;display:flex;gap:8px;padding:12px 0 2px;background:#fbf6ee}
+#edSheet .acts button{flex:1;font:600 14px 'Jost',sans-serif;letter-spacing:.04em;border-radius:30px;padding:13px;cursor:pointer;border:1.5px solid #6b4a2f}
+#edGo{background:#6b4a2f;color:#fbf6ee}
+#edReset,#edClose{background:transparent;color:#6b4a2f}
+#edNote{font-size:12.5px;opacity:.75;margin:2px 0 0}
+#edShade{position:fixed;inset:0;z-index:75;background:rgba(30,18,8,.35)}
+#edShade[hidden]{display:none}
+/* page photos (démonstration) */
+#sPh .ph-arch{position:absolute;left:150px;right:150px;top:300px;height:1180px;border-radius:390px 390px 26px 26px;overflow:hidden;box-shadow:0 30px 60px rgba(61,42,27,.28);background:#e6d4b8}
+#sPh .ph-arch::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 10px rgba(245,236,221,.9),inset 0 0 0 12px rgba(168,124,80,.6)}
+#sPh .ph-arch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+#sPh.on .ph-arch img{animation:phx var(--t) linear var(--d) infinite}
+#sPh .ph-title{position:absolute;left:0;right:0;top:120px;text-align:center}
+#sPh .ph-cap{position:absolute;left:0;right:0;top:1540px;text-align:center}
+</style>
+<div id="demoBar"><span class="tag">Démo</span><button type="button" class="ed" id="edOpen">✎ Personnaliser</button><a class="cmd" href="../../commande/index.html?modele=__MODELE__" target="_top">Commander ce modèle</a></div>
+<div id="edShade" hidden></div>
+<style id="phKf"></style>
+<form id="edSheet" autocomplete="off" aria-label="Personnaliser la démonstration">
+  <h2>Votre invitation</h2>
+  <p class="sub">Essayez vos textes et vos photos. Rien n’est envoyé ni enregistré : tout s’efface en fermant la page.</p>
+  <fieldset><legend>Vous</legend>
+    <label>Premier prénom<input id="edH1" maxlength="24"></label>
+    <label>Second prénom<input id="edH2" maxlength="24"></label>
+    <label>Téléphone 1<input id="edT1" inputmode="tel" maxlength="16"></label>
+    <label>Téléphone 2<input id="edT2" inputmode="tel" maxlength="16"></label>
+    <label class="w">Événement<input id="edTitre" maxlength="50" placeholder="Mariage, Baptême, 10 ans de mariage…"></label>
+    <label class="w">Phrase<input id="edPhrase" maxlength="70"></label>
+  </fieldset>
+  <fieldset><legend>Dates et lieux</legend>
+    <label>Jour J<input id="edDate" type="date"></label>
+    <label>Heure<input id="edHeure" type="time"></label>
+    <label class="w">Réponses jusqu’au<input id="edDl" type="date"></label>
+    <label>Lieu 1<input id="edL1" maxlength="26"></label>
+    <label>Lieu 2<input id="edL2" maxlength="26"></label>
+  </fieldset>
+  <fieldset><legend>Un invité (lien personnel)</legend>
+    <label>Famille invitée<input id="edFam" maxlength="40"></label>
+    <label>Places<input id="edPl" type="number" min="1" max="20" inputmode="numeric"></label>
+  </fieldset>
+  <fieldset><legend>Vos photos</legend>
+    <label class="w">Jusqu’à 6 photos<input id="edPhotos" type="file" accept="image/*" multiple></label>
+    <div id="edThumbs"></div>
+  </fieldset>
+  <p id="edNote">Le film d’ouverture est créé ensuite par le studio avec vos photos, vos textes et votre musique.</p>
+  <div class="acts"><button type="button" id="edReset">Réinitialiser</button><button type="submit" id="edGo">Voir le résultat</button></div>
+</form>
+<script>
+window.__saveRsvp = () => Promise.resolve(); /* démonstration : rien n'est envoyé */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('dragstart', e => e.preventDefault());
+(function(){
+  const D0 = __DEFAULTS__;
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const JOURS = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+  const MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  const jm = d => (d.getDate() === 1 ? '1er' : d.getDate()) + ' ' + MOIS[d.getMonth()];
+  const intl = t => { const d = String(t).replace(/\D/g, ''); return '+' + (d.startsWith('0') ? '261' + d.slice(1) : d); };
+  const g = window.__gInfo;
+  let st = { ...D0, fam: g && g.n ? g.n : D0.fam, pl: g && g.s ? g.s : D0.pl }, photos = D0.photos.slice();
+  const fields = { edH1:'h1', edH2:'h2', edT1:'t1', edT2:'t2', edTitre:'titre', edPhrase:'phrase', edDate:'date', edHeure:'heure', edDl:'dl', edL1:'l1', edL2:'l2', edFam:'fam', edPl:'pl' };
+  const fill = () => Object.entries(fields).forEach(([id, k]) => $('#' + id).value = st[k]);
+  function apply(){
+    const d = new Date(st.date + 'T' + (st.heure || '10:00') + ':00'), dl = new Date(st.dl + 'T12:00:00');
+    const dlTxt = jm(dl) + ' ' + dl.getFullYear();
+    $$('#s4 .k-per b, #s4 .k-gen b').forEach(b => b.textContent = dlTxt);
+    const pre = $('#rsvpPre b'); if (pre) pre.textContent = dlTxt;
+    const ph = $('#phrase'); if (ph) ph.textContent = st.phrase;
+    const people = [[st.h1, st.t1], [st.h2, st.t2]];
+    $$('.contacts a').forEach((a, i) => { const p = people[i]; if (!p) return; a.href = 'tel:' + intl(p[1]); a.querySelector('.script').textContent = p[0]; a.querySelector('.num').textContent = p[1]; });
+    const gt = $('.gcon .gtel'); if (gt){ gt.href = 'tel:' + intl(st.t1); gt.querySelector('.num').textContent = st.t1; }
+    const fb = $('.gcon .gfb span'); if (fb) fb.textContent = st.h1;
+    const maps = $$('.maps a'); [st.l1, st.l2].forEach((l, i) => { if (maps[i]) maps[i].lastChild.textContent = 'Map ' + l; });
+    const k5 = $$('#s5 .kicker'); if (k5.length) k5[k5.length - 1].textContent = st.titre + ' · ' + d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '.');
+    const cap = $('#sPh .ph-cap'); if (cap) cap.textContent = st.h1 + ' & ' + st.h2 + ' · ' + JOURS[d.getDay()] + ' ' + jm(d) + ' ' + d.getFullYear();
+    window.__setT && window.__setT(d.getTime());
+    if (g){ const pl = Math.max(1, Math.min(20, parseInt(st.pl, 10) || 1));
+      $('#seatsN').textContent = pl; $('#seatsW').textContent = pl > 1 ? 'personnes' : 'personne';
+      const fn = $('#filmName'); if (fn) fn.textContent = st.fam;
+      $('#howMany').textContent = pl > 1 ? `Combien serez-vous ? (${pl} places)` : 'Combien serez-vous ?'; }
+    const arch = $('#sPh .ph-arch'); const n = photos.length, per = 3.2, sl = 100 / n;
+    $('#phKf').textContent = n === 1 ? '@keyframes phx{0%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}'
+      : `@keyframes phx{0%{opacity:0;transform:scale(1.08)}${(sl * .12).toFixed(2)}%{opacity:1}${(sl * .9).toFixed(2)}%{opacity:1}${(sl * 1.05).toFixed(2)}%{opacity:0;transform:scale(1)}100%{opacity:0}}`;
+    arch.innerHTML = photos.map((u, i) => `<img src="${u}" alt="" style="--t:${n * per}s;--d:${(i * per - .3).toFixed(1)}s">`).join('');
+    $('#edThumbs').innerHTML = photos.map(u => `<img src="${u}" alt="">`).join('');
+  }
+  const sheet = $('#edSheet'), shade = $('#edShade');
+  const open = v => { sheet.classList.toggle('open', v); shade.hidden = !v; };
+  $('#edOpen').addEventListener('click', e => { e.stopPropagation(); fill(); open(true); });
+  shade.addEventListener('click', e => { e.stopPropagation(); open(false); });
+  sheet.addEventListener('click', e => e.stopPropagation());
+  sheet.addEventListener('input', e => { const k = fields[e.target.id]; if (k) { st[k] = e.target.value; apply(); } });
+  $('#edPhotos').addEventListener('change', e => {
+    const fs = [...e.target.files].filter(f => f.type.startsWith('image/')).slice(0, 6);
+    if (!fs.length) return;
+    photos.forEach(u => u.startsWith('blob:') && URL.revokeObjectURL(u));
+    photos = fs.map(f => URL.createObjectURL(f)); apply();
+  });
+  $('#edReset').addEventListener('click', () => { st = { ...D0 }; photos = D0.photos.slice(); $('#edPhotos').value = ''; fill(); apply(); });
+  sheet.addEventListener('submit', e => { e.preventDefault(); open(false); if (window.__show) window.__show(1); });
+  apply();
+})();
+</script>

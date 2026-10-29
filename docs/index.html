@@ -23,11 +23,22 @@ a{color:inherit}
 h2{font:600 clamp(30px,6vw,44px)/1.1 var(--serif);margin:6px 0 14px;color:var(--espresso)}
 
 header.hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,#efe2cc,var(--linen) 70%);border-bottom:1px solid var(--line)}
-.hero .wrap{padding-top:22px;padding-bottom:56px;text-align:center}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:46px}
-.brand{font:400 30px/1 var(--script);color:var(--brown);text-decoration:none}
-.top nav{display:flex;gap:16px;font:500 13px var(--sans);letter-spacing:.08em;text-transform:uppercase}
-.top nav a{text-decoration:none;color:var(--brown)}
+.hero .wrap{padding-top:42px;padding-bottom:56px;text-align:center}
+/* en-tête et pied de page fixes */
+body{padding-top:calc(58px + env(safe-area-inset-top,0px));padding-bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+section{scroll-margin-top:calc(64px + env(safe-area-inset-top,0px))}
+.topbar{position:fixed;left:0;right:0;top:0;z-index:20;background:rgba(247,240,228,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;height:58px}
+.brand{font:400 30px/1 var(--script);color:var(--brown);text-decoration:none;white-space:nowrap}
+.topbar nav{display:flex;gap:16px;font:500 12.5px var(--sans);letter-spacing:.1em;text-transform:uppercase}
+.topbar nav a{text-decoration:none;color:var(--brown)}
+.botbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--espresso);color:var(--paper);padding-bottom:env(safe-area-inset-bottom,0px)}
+.botbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;height:66px}
+.botbar small{font-size:12.5px;opacity:.75;line-height:1.3}
+.botbar .acts{display:flex;gap:8px}
+.botbar .btn{padding:11px 16px;font-size:14px;background:var(--paper);color:var(--brown);border-color:var(--paper)}
+.botbar .btn.wa{background:#4f8a4f;border-color:#4f8a4f;color:#fff}
 .hero h1{font:400 clamp(52px,13vw,96px)/1 var(--script);color:var(--brown);margin:14px 0 10px}
 .hero p.lead{font:italic 400 clamp(20px,4.6vw,26px)/1.35 var(--serif);max-width:620px;margin:0 auto 26px}
 .hero .acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
@@ -44,6 +55,7 @@ section{padding:56px 0;border-bottom:1px solid var(--line)}
 .m-body h3{margin:0;font:400 40px/1 var(--script);color:var(--brown)}
 .m-body p{margin:0;font:italic 19px/1.35 var(--serif)}
 .occ{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.prix{font:600 15px var(--sans);color:var(--brown);margin:0}
 .occ li{font-size:12.5px;border:1px solid var(--line);border-radius:20px;padding:3px 10px;background:#fff8ee}
 .m-acts{display:flex;flex-wrap:wrap;gap:8px}
 .m-acts:empty{display:none}
@@ -71,11 +83,11 @@ section{padding:56px 0;border-bottom:1px solid var(--line)}
 .price h3{margin:0;font:600 24px var(--serif)} .price .amt{font:600 30px var(--sans);color:var(--brown);margin:4px 0 8px}
 .note{font:italic 19px/1.4 var(--serif)}
 footer{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}
-@media (max-width:560px){.top nav{display:none} section{padding:44px 0}}
+@media (max-width:560px){.topbar nav a.opt{display:none} .botbar small{display:none} .botbar .acts{flex:1} .botbar .btn{flex:1} section{padding:44px 0}}
 </style></head><body>
+<div class="topbar"><div class="wrap"><a class="brand" href="#">Studio Fanasana</a>
+  <nav><a href="#modeles">Modèles</a><a class="opt" href="#inclus">Inclus</a><a href="#commander">Commander</a></nav></div></div>
 <header class="hero"><div class="wrap">
-  <div class="top"><a class="brand" href="#">Studio Fanasana</a>
-    <nav><a href="#modeles">Modèles</a><a href="#inclus">Inclus</a><a href="#commander">Commander</a></nav></div>
   <div class="kicker">Mariage · Anniversaire de mariage · Baptême</div>
   <h1>Vos invitations,<br>en film</h1>
   <svg class="orn" viewBox="0 0 200 18" aria-hidden="true"><path d="M0 9H80M120 9H200" stroke="#a87c50" stroke-width="1.5"/><path d="M100 2 L107 9 L100 16 L93 9Z" fill="none" stroke="#a87c50" stroke-width="1.5"/></svg>
@@ -85,22 +97,23 @@ footer{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}
 
 <section id="modeles"><div class="wrap">
   <div class="kicker">Catalogue</div><h2>Essayez nos modèles</h2>
-  <p>Ouvrez un modèle sur votre téléphone : vous voyez exactement ce que vos invités verront. Les démonstrations portent un filigrane et rien n’y est enregistré ni téléchargeable : nous créons ensuite votre invitation avec vos textes, photos et musique.</p>
+  <p>Ouvrez un modèle sur votre téléphone : vous voyez exactement ce que vos invités verront. Touchez « Personnaliser » pour essayer vos prénoms, vos dates, vos lieux et vos photos. Rien n’est enregistré : nous créons ensuite votre invitation et votre film avec vos textes, photos et musique.</p>
   <div class="models">
-    <article class="model">
+    <article class="model" data-modele="caramel" style="order:0">
       <a class="poster" href="modeles/caramel/index.html" aria-label="Essayer le modèle Caramel">
         <img src="modeles/caramel/film.jpg" alt="Aperçu du modèle Caramel" loading="lazy" draggable="false">
         <span class="play" aria-hidden="true">▶</span><span class="tag">Démo</span>
       </a>
       <div class="m-body">
-        <h3>Caramel</h3>
-        <p>Tons caramel et crème, fleurs dorées, écriture manuscrite</p>
-        <ul class="occ"><li>Mariage</li><li>Anniversaire de mariage</li><li>Baptême</li></ul>
+        <h3 data-k="nom">Caramel</h3>
+        <p data-k="accroche">Tons caramel et crème, fleurs dorées, écriture manuscrite</p>
+        <p class="prix" data-k="prix" hidden></p>
+        <ul class="occ" data-k="occasions"><li>Mariage</li><li>Anniversaire de mariage</li><li>Baptême</li></ul>
         <div class="m-acts">
           <a class="btn sm" href="modeles/caramel/index.html">Essayer · lien général</a>
           <a class="btn sm sec" href="modeles/caramel/index.html?i=eyJuIjogIkZhbWlsbGUgUmFrb3RvIiwgInMiOiA0LCAiaWQiOiAiZGVtbyIsICJhIjogMiwgImUiOiAyfQ">Essayer · lien personnel</a>
         </div>
-        <div class="m-acts"><a class="btn wa sm" href="https://wa.me/261342754147?text=Bonjour%20Studio%20Fanasana%20%21%20Je%20voudrais%20le%20mod%C3%A8le%20Caramel." target="_blank" rel="noopener">Commander ce modèle</a></div>
+        <div class="m-acts"><a class="btn wa sm" href="commande/index.html?modele=caramel">Commander ce modèle</a></div>
       </div>
     </article>
     <div class="soon"><h3>Sur mesure</h3><p>Couleurs, fleurs, écriture, scènes du film : nous pouvons créer un modèle à votre image.</p></div>
@@ -121,8 +134,11 @@ footer{padding:30px 0 40px;text-align:center;font-size:13px;opacity:.75}
 <section id="commander"><div class="wrap order">
   <div><div class="kicker">Commander</div><h2>Ce qu’il nous faut</h2><ul><li>Type d’événement, prénoms, date et programme avec les heures</li><li>Lieux et liens Google Maps</li><li>Date limite de réponse</li><li>Téléphones et lien Facebook ou Messenger à afficher</li><li>Photos et vidéos, musique</li><li>Liste d’invités Excel (vous pouvez aussi l’ajouter plus tard)</li><li>Adresses Gmail qui auront accès à la Gestion</li></ul>
     <p class="note" style="margin-top:16px">Les photos, vidéos et la musique doivent vous appartenir ou être libres de droits.</p></div>
-  <div class="cta"><h3>Parlons de votre fête</h3><p>Dites-nous la date et le modèle qui vous plaît, nous vous répondons avec un devis.</p>
-    <div class="acts"><a class="btn wa" href="https://wa.me/261342754147?text=Bonjour%20Studio%20Fanasana%20%21%20Je%20voudrais%20une%20invitation%20num%C3%A9rique." target="_blank" rel="noopener">WhatsApp</a><a class="btn" href="tel:+261342754147">Appeler</a></div></div>
+  <div class="cta"><h3>Parlons de votre fête</h3><p>Remplissez le formulaire de commande : nous vous répondons sur WhatsApp avec un devis.</p>
+    <div class="acts"><a class="btn" href="commande/index.html">Formulaire de commande</a><a class="btn wa" href="https://wa.me/261342754147?text=Bonjour%20Studio%20Fanasana%20%21%20Je%20voudrais%20une%20invitation%20num%C3%A9rique." target="_blank" rel="noopener">WhatsApp</a><a class="btn" href="tel:+261342754147">Appeler</a></div></div>
 </div></section>
 <footer>Studio Fanasana · Invitations numériques</footer>
+
+<div class="botbar"><div class="wrap"><small>Mariage · Anniversaire de mariage · Baptême</small>
+  <div class="acts"><a class="btn" href="#modeles">Essayer un modèle</a><a class="btn wa" href="commande/index.html">Commander</a></div></div></div>
 </body></html>

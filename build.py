@@ -143,48 +143,50 @@ def demo_film(folder, dest):
     src = folder / 'film.mp4'
     cache = folder / '.cache-demo.mp4'
     stamp = folder / '.cache-demo.txt'
-    key = version(src) + STUDIO['nom']
+    key = version(src) + 'sans-texte'
     if not (cache.exists() and stamp.exists() and stamp.read_text() == key):
         font = ROOT / 'studio-assets' / 'DejaVuSans-Bold.ttf'
         txt = f"MODÈLE DE DÉMONSTRATION · {STUDIO['nom']}".replace(':', r'\:').replace("'", '')
         dt = (f"drawtext=fontfile={font}:text='{txt}':fontcolor=white@0.55:fontsize=17:borderw=1:bordercolor=black@0.25:"
               "x=(w-text_w)/2:y=h*{y}")
-        vf = 'scale=540:960,' + ','.join(dt.format(y=y) for y in ('0.12', '0.5', '0.88'))
+        vf = 'scale=540:960'  # film réduit, sans texte ajouté (demande du studio)
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(src), '-vf', vf, '-c:v', 'libx264', '-preset', 'veryfast',
                         '-crf', '27', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-c:a', 'aac', '-b:a', '96k', str(cache)], check=True)
         stamp.write_text(key)
     shutil.copy2(cache, dest / 'film.mp4')
 
-DEMO_CSS = """
-<style>
-#wm{position:fixed;inset:0;z-index:60;pointer-events:none;overflow:hidden}
-#wm span{position:absolute;left:50%;top:50%;width:200vmax;margin-left:-100vmax;transform:translateY(-50%) rotate(-28deg);
-  font:600 13px/2.8 'Jost',sans-serif;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.34);
-  text-shadow:0 0 2px rgba(61,42,27,.35);white-space:pre-wrap;text-align:center;word-spacing:.6em}
-#demoBar{position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(61,42,27,.88);color:#f5ecdd;font:500 13px/1.2 'Jost',sans-serif;letter-spacing:.04em}
-#demoBar a{color:#3d2a1b;background:#f5ecdd;border-radius:30px;padding:8px 14px;text-decoration:none;font-weight:600;white-space:nowrap}
-#demoBar span{opacity:.9}
-img,video{-webkit-touch-callout:none;-webkit-user-drag:none}
-</style>"""
+PHOTO_SCENE = """  <!-- photos (démonstration) -->
+  <section class="scene pg" id="sPh">
+    <div class="paper"><div class="tex grain"></div><div class="frame"></div></div>
+    <div class="flw" data-g="small" style="--d:.6s;right:-6px;top:-6px;width:250px;height:250px"></div>
+    <div class="flw" data-g="small" style="--d:.8s;left:-6px;top:-6px;width:250px;height:250px;transform:scaleX(-1)"></div>
+    <div class="flw" data-g="bottom" style="--d:1s;left:50%;bottom:40px;width:640px;height:210px;margin-left:-320px"></div>
+    <div class="ph-title"><div class="kicker rv" style="--d:.2s;font-size:32px">Nos plus beaux souvenirs</div></div>
+    <div class="ph-arch rv" style="--d:.3s"></div>
+    <div class="ph-cap script rv" style="--d:.9s;font-size:66px;color:var(--brown)"></div>
+  </section>
 
-def demo_html(page, studio_url):
+"""
+
+def demo_html(page, defaults):
     # aucun enregistrement : on retire Firebase, et le lien personnel s'affiche quand même en mode démonstration
     a = page.find('<script type="module">'); b = page.find('</script>', a) + len('</script>')
     assert 'initializeApp' in page[a:b]
     page = page[:a] + page[b:]
-    page = page.replace("const demo = /[?&]demo\\b/.test(location.search);\nwindow.__gInfo = m && !demo ? dec(m[1]) : null;",
-                        "const demo = true;\nwindow.__gInfo = m ? dec(m[1]) : null;")
-    assert 'const demo = true;' in page
-    page = page.replace('<video id="film" playsinline', '<video id="film" controlslist="nodownload noplaybackrate" disablepictureinpicture disableremoteplayback playsinline')
-    wm = ('MODÈLE DE DÉMONSTRATION · ' + STUDIO['nom'] + '      ') * 6
-    marks = '\n'.join(f'<span style="margin-top:{y}vh">{h(wm)}</span>' for y in range(-90, 100, 16))
-    extra = (DEMO_CSS + f'\n<div id="wm" aria-hidden="true">{marks}</div>'
-             + f'\n<div id="demoBar"><span>Modèle de démonstration</span><a href="../../index.html#commander" target="_top">Commander ce modèle</a></div>'
-             + "\n<script>window.__saveRsvp = () => Promise.resolve(); /* démonstration : rien n'est envoyé */"
-             + "document.addEventListener('contextmenu',e=>e.preventDefault());document.addEventListener('dragstart',e=>e.preventDefault());</script>\n")
-    page = page.replace('</body></html>', extra + '</body></html>')
-    page = page.replace('<meta name="robots" content="noindex">', '<meta name="robots" content="noindex">')
+    def r(old, new, n=1):
+        nonlocal page
+        assert page.count(old) == n, old[:60]
+        page = page.replace(old, new)
+    r("const demo = /[?&]demo\\b/.test(location.search);\nwindow.__gInfo = m && !demo ? dec(m[1]) : null;",
+      "const demo = true;\nwindow.__gInfo = m ? dec(m[1]) : null;")
+    r('<video id="film" playsinline', '<video id="film" controlslist="nodownload noplaybackrate" disablepictureinpicture disableremoteplayback playsinline')
+    # page photos entre « Nous sommes heureux… » et la confirmation
+    r('  <!-- 4. RSVP -->', PHOTO_SCENE + '  <!-- 4. RSVP -->')
+    r('<div class="serif" style="font-size:86px;font-style:italic;line-height:1.2;margin-top:30px">', '<div class="serif" id="phrase" style="font-size:86px;font-style:italic;line-height:1.2;margin-top:30px">')
+    page, k = re.subn(r"\(function\(\)\{ const T=(\d+);", r"(function(){ let T=\1; window.__setT = v => { T = v; };", page); assert k == 1
+    r("const film = document.getElementById('film');", "window.__show = show;\nconst film = document.getElementById('film');")
+    ed = (ROOT / 'outils' / 'demo_editeur.html').read_text().replace('__MODELE__', defaults.get('modele', '')).replace('__DEFAULTS__', json.dumps(defaults, ensure_ascii=False).replace('</', '<\\/'))
+    r('</body></html>', ed + '</body></html>')
     return page
 
 # ---------- construction ----------
@@ -199,8 +201,16 @@ def build_event(folder, catalogue, admin_rows):
         dest = SITE / 'modeles' / cfg['modele']
         if dest.exists(): shutil.rmtree(dest)
         dest.mkdir(parents=True)
-        (dest / 'index.html').write_text(demo_html(inv, STUDIO['url_site'].rstrip('/') + '/'))
-        copy_media(folder, dest, ['film.jpg', 'music.mp3'])
+        jour = datetime.fromisoformat(row['date']); dlj = datetime.fromtimestamp(row['date_limite_ms'] / 1000 - 86400)
+        hs, ls = cfg['hotes'], cfg['lieux']
+        photos = sorted(p.name for p in folder.glob('photo*.jpg'))
+        defaults = {'h1': hs[0]['nom'], 'h2': hs[-1]['nom'], 't1': hs[0]['tel'], 't2': hs[-1]['tel'], 'titre': cfg['titre'],
+                    'phrase': cfg.get('phrase_partage', ''), 'date': jour.strftime('%Y-%m-%d'), 'heure': jour.strftime('%H:%M'),
+                    'dl': dlj.strftime('%Y-%m-%d'), 'l1': ls[0]['nom'], 'l2': ls[-1]['nom'],
+                    'fam': cfg.get('vitrine', {}).get('famille_exemple', 'Famille Rakoto'), 'pl': 4,
+                    'photos': [f'{n}?v={version(folder / n)}' for n in photos], 'modele': cfg['modele']}
+        (dest / 'index.html').write_text(demo_html(inv, defaults))
+        copy_media(folder, dest, ['film.jpg', 'music.mp3'] + photos)
         demo_film(folder, dest)
         meta = cfg.get('vitrine', {})
         catalogue.append({**meta, 'modele': cfg['modele'], 'titre_demo': cfg['titre'],
@@ -236,6 +246,9 @@ def main():
     (SITE / 'admin').mkdir(exist_ok=True)
     (SITE / 'admin' / 'index.html').write_text(pages_studio.admin(STUDIO))
     (SITE / 'admin' / 'evenements.json').write_text(json.dumps(admin_rows, ensure_ascii=False, indent=1))
+    (SITE / 'admin' / 'modeles.json').write_text(json.dumps([{k: m.get(k) for k in ('modele', 'nom', 'accroche', 'occasions')} for m in catalogue], ensure_ascii=False, indent=1))
+    (SITE / 'commande').mkdir(exist_ok=True)
+    (SITE / 'commande' / 'index.html').write_text(pages_studio.commande(STUDIO, catalogue))
     (ROOT / 'firestore.rules').write_text(pages_studio.rules(STUDIO))
     print('  vitrine, admin, firestore.rules')
 
